@@ -67,3 +67,4 @@ For more details, see: https://help.github.com/en/articles/adding-a-remote
 
 ### Art
 - [MaxParata](https://maxparata.itch.io/monogon-isometricdungeon)
+- [Engvee](https://engvee.itch.io/animated-isometric-prototyping-hero)
