@@ -1,0 +1,75 @@
+# Isometric 2D Game Task List
+
+## Implementation Steps
+
+1. Project Setup (AI)
+   - [x ] Update mod structure based on flappy_bird_clone mod example
+   - [x ] Create appropriately named placeholder scene file
+   - [x ] Update settings to launch main scene from play button
+
+2. Isometric Tilemap Scene Setup (Human)
+    - [ ] Create new 2D scene
+    - [ ] Add `TileMapLayer` node for isometric tilemap
+    - [ ] Create new `TileSet` resource for the `TileMapLayer`
+    - [ ] Configure `TileSet` for isometric tiles (set Tile Shape to Isometric, Tile Layout to Diamond Down, Tile Size appropriately)
+    - [ ] Import tile spritesheet into the `TileSet`
+    - [ ] Paint a basic tilemap to test isometric setup
+
+3. Player Character Scene Setup (Human)
+    - [ ] Create new 2D scene for player character
+    - [ ] Add `Sprite2D` node for player sprite
+    - [ ] Add `CharacterBody2D` for player physics and collision
+    - [ ] Configure collision shape for `CharacterBody2D`
+
+4. Camera Setup (Human)
+    - [ ] In main scene, add `Camera2D` as a child of the root node
+    - [ ] Configure `Camera2D` for isometric view (adjust zoom or projection if needed - check documentation)
+    - [ ] Ensure camera is positioned to view the initial tilemap area
+
+5. Player Movement Implementation (AI)
+    - [ ] Create a new script for player character
+    - [ ] Implement isometric movement logic in the player script:
+        - [ ] Read input for up, down, left, right directions
+        - [ ] Convert input directions to isometric movement vectors
+        - [ ] Apply movement vectors to `CharacterBody2D` using `move_and_slide()`
+
+6. Camera Follow Player (AI)
+    - [ ] In main scene script, get reference to player character node
+    - [ ] Implement camera follow logic:
+        - [ ] In `_physics_process()`, set `Camera2D` position to player character position (or slightly offset if desired)
+
+7. Level Design - Tilemap Level Creation (Human)
+    - [ ] Using the Tilemap editor, design the game level within the `TileMapLayer`
+    - [ ] Add various tiles to create the level layout
+
+8. Testing and Refinement (Human & AI)
+    - [ ] Human: Manually test player movement and camera follow in the level
+    - [ ] AI: Implement basic unit tests for player movement script (optional for simple movement)
+    - [ ] Human: Adjust player movement speed, camera follow speed, and tilemap layout as needed based on testing
+    - [ ] Human: Fix any visual bugs or rendering issues (e.g., Y-sort if needed for correct tile overlap)
+
+
+## Scene Components
+
+- Main Scene
+    - Root Node (Node2D or similar)
+        - `TileMapLayer` (Isometric Tilemap)
+        - Player Character Scene Instance
+        - `Camera2D`
+
+- Player Character Scene
+    - `CharacterBody2D` (root)
+        - `Sprite2D` (Player Sprite)
+        - CollisionShape2D (for `CharacterBody2D`)
+
+- TileSet Resource
+    - Configured for Isometric Tiles
+    - Contains tile sprites
+
+
+## Game Settings
+
+- Player Movement Speed
+- Camera Follow Speed (if adjustable)
+- Tilemap Tile Size (configured in TileSet)
+- Isometric Tile Layout (Diamond Down)

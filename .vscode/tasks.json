@@ -38,6 +38,12 @@
 			"problemMatcher": []
 		},
 		{
+			"label": "Build Isometric 2D Prototype",
+			"type": "shell",
+			"command": "${workspaceFolder}/projects/isometric_2d_prototype/build.bat",
+			"problemMatcher": []
+		},
+		{
 			"label": "Run Godot Game",
 			"type": "shell",
 			"command": "uv run c:/GithubRepos/Test/run-godot-game.py",
