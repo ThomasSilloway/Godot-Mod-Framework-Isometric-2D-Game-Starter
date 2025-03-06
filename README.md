@@ -72,3 +72,8 @@ For more details, see: https://help.github.com/en/articles/adding-a-remote
 
 ## Areas to explore in the future
  - Add mid game menu that pauses the game and allows you to resume, settings, or quit
+
+## Credits
+
+### Art
+- [MaxParata](https://maxparata.itch.io/monogon-isometricdungeon)

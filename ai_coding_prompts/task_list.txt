@@ -8,12 +8,12 @@
    - [x ] Update settings to launch main scene from play button
 
 2. Isometric Tilemap Scene Setup (Human)
-    - [ ] Create new 2D scene
-    - [ ] Add `TileMapLayer` node for isometric tilemap
-    - [ ] Create new `TileSet` resource for the `TileMapLayer`
-    - [ ] Configure `TileSet` for isometric tiles (set Tile Shape to Isometric, Tile Layout to Diamond Down, Tile Size appropriately)
-    - [ ] Import tile spritesheet into the `TileSet`
-    - [ ] Paint a basic tilemap to test isometric setup
+    - [x ] Create new 2D scene
+    - [x ] Add `TileMapLayer` node for isometric tilemap
+    - [x ] Create new `TileSet` resource for the `TileMapLayer`
+    - [x ] Configure `TileSet` for isometric tiles (set Tile Shape to Isometric, Tile Layout to Diamond Down, Tile Size appropriately)
+    - [x ] Import tile spritesheet into the `TileSet`
+    - [x ] Paint a basic tilemap to test isometric setup
 
 3. Player Character Scene Setup (Human)
     - [ ] Create new 2D scene for player character
@@ -22,7 +22,7 @@
     - [ ] Configure collision shape for `CharacterBody2D`
 
 4. Camera Setup (Human)
-    - [ ] In main scene, add `Camera2D` as a child of the root node
+    - [x ] In main scene, add `Camera2D` as a child of the root node
     - [ ] Configure `Camera2D` for isometric view (adjust zoom or projection if needed - check documentation)
     - [ ] Ensure camera is positioned to view the initial tilemap area
 
