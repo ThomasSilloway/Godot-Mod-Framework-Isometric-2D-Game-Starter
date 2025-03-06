@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwpfy1b6ti8iv"]
+
+[ext_resource type="PackedScene" uid="uid://cuv702ebtfh5l" path="res://settings_menu/settings_button.tscn" id="1_yfass"]
+
+[node name="SettingsButtonContainerPlaceholder" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Placeholder"
+
+[node name="SettingsButton" parent="VBoxContainer" instance=ExtResource("1_yfass")]
+layout_mode = 2

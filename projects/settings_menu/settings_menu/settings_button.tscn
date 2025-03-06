@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://cuv702ebtfh5l"]
+
+[ext_resource type="Script" uid="uid://kc5js0bfkrm0" path="res://settings_menu/scripts/settings_button.gd" id="1_n0ly0"]
+
+[node name="SettingsButton" type="Button"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Settings"
+script = ExtResource("1_n0ly0")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

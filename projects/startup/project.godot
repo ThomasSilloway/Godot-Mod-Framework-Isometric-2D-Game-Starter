@@ -1,0 +1,28 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Godot-Mod-Framework"
+run/main_scene="uid://cuspoqasdx4fo"
+config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+YamlParser="*res://scripts/yaml_parser.gd"
+ConfigManager="*res://scripts/config_manager.gd"
+FileManager="*res://scripts/file_manager.gd"
+ModManager="*res://scripts/mod_manager.gd"
+SettingsManager="*res://scripts/settings_manager.gd"
+
+[display]
+
+window/stretch/mode="canvas_items"

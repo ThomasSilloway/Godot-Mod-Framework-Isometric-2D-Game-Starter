@@ -1,0 +1,169 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfu34v1p3cejp"]
+
+[ext_resource type="Script" uid="uid://bbfey4ofkis5c" path="res://settings_menu/scripts/settings_menu.gd" id="1_vin47"]
+[ext_resource type="FontFile" uid="uid://bg6tgyyrifh8o" path="res://settings_menu/fonts/futura medium bt.ttf" id="2_hykgq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t4tua"]
+bg_color = Color(0.2484, 0.2484, 0.2484, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="Settings" type="Panel"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -112.0
+offset_top = -72.0
+offset_right = 110.0
+offset_bottom = 246.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_t4tua")
+script = ExtResource("1_vin47")
+min_volume = -50.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -107.0
+offset_top = 6.0
+offset_right = 31.0
+offset_bottom = 29.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_hykgq")
+text = "Settings"
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -107.0
+offset_top = 30.0
+offset_right = 107.0
+offset_bottom = 34.0
+grow_horizontal = 2
+
+[node name="ResolutionButton" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 37.5
+offset_right = 214.0
+offset_bottom = 63.5
+theme_override_font_sizes/font_size = 13
+selected = 0
+item_count = 4
+popup/item_0/text = "1920x1080"
+popup/item_0/id = 0
+popup/item_1/text = "1280x720"
+popup/item_1/id = 1
+popup/item_2/text = "1152x648"
+popup/item_2/id = 2
+popup/item_3/text = "640x360"
+popup/item_3/id = 3
+
+[node name="Label" type="Label" parent="ResolutionButton"]
+layout_mode = 0
+offset_left = -109.0
+offset_top = 2.0
+offset_right = -26.0
+offset_bottom = 25.0
+theme_override_fonts/font = ExtResource("2_hykgq")
+text = "Resolution"
+
+[node name="FullscreenToggle" type="CheckBox" parent="."]
+layout_mode = 0
+offset_left = 192.0
+offset_top = 72.5
+offset_right = 216.0
+offset_bottom = 96.5
+
+[node name="Label" type="Label" parent="FullscreenToggle"]
+layout_mode = 0
+offset_left = -186.0
+offset_top = -1.0
+offset_right = -103.0
+offset_bottom = 22.0
+theme_override_fonts/font = ExtResource("2_hykgq")
+text = "Fullscreen"
+
+[node name="VSyncToggle" type="CheckBox" parent="."]
+layout_mode = 0
+offset_left = 192.0
+offset_top = 103.5
+offset_right = 216.0
+offset_bottom = 127.5
+
+[node name="Label" type="Label" parent="VSyncToggle"]
+layout_mode = 0
+offset_left = -186.0
+offset_top = -1.0
+offset_right = -103.0
+offset_bottom = 22.0
+theme_override_fonts/font = ExtResource("2_hykgq")
+text = "VSync"
+
+[node name="SlidersVbox" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 133.0
+offset_right = 214.0
+offset_bottom = 212.0
+
+[node name="Master" type="Label" parent="SlidersVbox"]
+layout_mode = 2
+text = "Master
+"
+paragraph_separator = "  "
+
+[node name="MasterScrollBar" type="HScrollBar" parent="SlidersVbox"]
+layout_mode = 2
+max_value = 1.0
+value = 0.8
+
+[node name="Music" type="Label" parent="SlidersVbox"]
+layout_mode = 2
+text = "Music
+"
+paragraph_separator = "  "
+
+[node name="MusicScrollBar" type="HScrollBar" parent="SlidersVbox"]
+layout_mode = 2
+max_value = 1.0
+value = 0.8
+
+[node name="SFX" type="Label" parent="SlidersVbox"]
+layout_mode = 2
+text = "Sound Effects
+"
+paragraph_separator = "  "
+
+[node name="SFXScrollBar" type="HScrollBar" parent="SlidersVbox"]
+layout_mode = 2
+max_value = 1.0
+value = 0.8
+
+[node name="Spacer" type="Label" parent="SlidersVbox"]
+layout_mode = 2
+text = "
+"
+paragraph_separator = "  "
+
+[node name="ApplyButton" type="Button" parent="SlidersVbox"]
+layout_mode = 2
+text = "Apply"
+
+[connection signal="value_changed" from="SlidersVbox/MasterScrollBar" to="." method="_on_master_scroll_bar_value_changed"]
+[connection signal="value_changed" from="SlidersVbox/MusicScrollBar" to="." method="_on_music_scroll_bar_value_changed"]
+[connection signal="value_changed" from="SlidersVbox/SFXScrollBar" to="." method="_on_sfx_scroll_bar_value_changed"]
+[connection signal="pressed" from="SlidersVbox/ApplyButton" to="." method="_on_apply_settings"]
