@@ -12,6 +12,7 @@ Run `projects/isometric_2d_prototype/build.bat` and confirm:
 ## Docs
 
     godot 4.4: https://docs.godotengine.org/en/stable/
+    TODO: Need to add actual docs that might help to the project
 
 ## Implementation Details
  - Use only Godot 4.4 syntax
@@ -23,10 +24,11 @@ Run `projects/isometric_2d_prototype/build.bat` and confirm:
         - walk000 - the walking up animation
         - walk090 - the walking right animation
         - walk180 - the walking down animation
+      TODO: This was not specific enough
  - There are no animations for walking left, so we need to flip the sprite
- - The controls should be WASD and Arrow keys including diagonal movement
+ - The controls should be WASD and Arrow keys including diagonal movement - TODO: This was not specific enough
  - The tilemap is 400x200 and moving a player 1 tile directly down results in x=0, y=200
- - Don't try to open the godot editor
+ - Don't try to open the godot editor to test or verify or for any reason
 
 ##Tasks (Aka Prompts)
 
@@ -56,6 +58,7 @@ Run `projects/isometric_2d_prototype/build.bat` and confirm:
 
 4. Verification
 ```
+TODO: See if we can just run the game by itself and pipe the output into the batch file output
 Validate your code works by running the `Build Isometric 2D Prototype` task in VSCode
 
 You should see a log message that says the isometric_2d_prototype mod was loaded and no errors
