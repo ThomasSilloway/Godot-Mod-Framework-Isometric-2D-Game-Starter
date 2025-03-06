@@ -16,22 +16,22 @@
     - [x ] Paint a basic tilemap to test isometric setup
 
 3. Player Character Scene Setup (Human)
-    - [ ] Create new 2D scene for player character
-    - [ ] Add `Sprite2D` node for player sprite
-    - [ ] Add `CharacterBody2D` for player physics and collision
-    - [ ] Configure collision shape for `CharacterBody2D`
+    - [x ] Create new 2D scene for player character
+    - [x ] Add `Sprite2D` node for player sprite
+    - [x ] Add `CharacterBody2D` for player physics and collision
+    - [x ] Configure collision shape for `CharacterBody2D`
 
 4. Camera Setup (Human)
     - [x ] In main scene, add `Camera2D` as a child of the root node
-    - [ ] Configure `Camera2D` for isometric view (adjust zoom or projection if needed - check documentation)
-    - [ ] Ensure camera is positioned to view the initial tilemap area
+    - [x ] Configure `Camera2D` for isometric view (adjust zoom or projection if needed - check documentation)
+    - [x ] Ensure camera is positioned to view the initial tilemap area
 
 5. Player Movement Implementation (AI)
-    - [ ] Create a new script for player character
-    - [ ] Implement isometric movement logic in the player script:
-        - [ ] Read input for up, down, left, right directions
-        - [ ] Convert input directions to isometric movement vectors
-        - [ ] Apply movement vectors to `CharacterBody2D` using `move_and_slide()`
+    - [x ] Create a new script for player character
+    - [x ] Implement isometric movement logic in the player script:
+        - [x ] Read input for up, down, left, right directions
+        - [x ] Convert input directions to isometric movement vectors
+        - [x ] Apply movement vectors to `CharacterBody2D` using `move_and_slide()`
 
 6. Camera Follow Player (AI)
     - [ ] In main scene script, get reference to player character node
