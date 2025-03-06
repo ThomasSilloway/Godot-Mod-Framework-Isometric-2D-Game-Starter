@@ -1,7 +1,9 @@
-[gd_scene load_steps=152 format=3 uid="uid://jttykfy1nef"]
+[gd_scene load_steps=154 format=3 uid="uid://jttykfy1nef"]
 
 [ext_resource type="Texture2D" uid="uid://cijvl4wnu0bvv" path="res://isometric_2d_prototype/character/content/WalkForward_Unarmed_Body_000.png" id="1_2cyyq"]
+[ext_resource type="Script" uid="uid://bdlwtri6uek8x" path="res://isometric_2d_prototype/character/animation_player.gd" id="1_daw84"]
 [ext_resource type="Texture2D" uid="uid://bgfy1p7ga3smb" path="res://isometric_2d_prototype/character/content/WalkForward_Unarmed_Body_045.png" id="2_gb2o6"]
+[ext_resource type="Script" uid="uid://dxc7m4x3j08tm" path="res://isometric_2d_prototype/character/player.gd" id="2_ilwmq"]
 [ext_resource type="Texture2D" uid="uid://ckht4ba1ieloi" path="res://isometric_2d_prototype/character/content/WalkForward_Unarmed_Body_090.png" id="3_44vbx"]
 [ext_resource type="Texture2D" uid="uid://lmjem01utt2g" path="res://isometric_2d_prototype/character/content/WalkForward_Unarmed_Body_135.png" id="4_gqda0"]
 [ext_resource type="Texture2D" uid="uid://cpcgdi16ste0t" path="res://isometric_2d_prototype/character/content/WalkForward_Unarmed_Body_180.png" id="5_6m4mb"]
@@ -1045,16 +1047,16 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2cyyq"]
 size = Vector2(20, 69)
 
-[node name="Character" type="Node2D"]
+[node name="Character" type="CharacterBody2D"]
+script = ExtResource("2_ilwmq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -29)
 sprite_frames = SubResource("SpriteFrames_w7x6r")
 animation = &"walk_090"
 frame_progress = 0.571278
+script = ExtResource("1_daw84")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, -29.5)
 shape = SubResource("RectangleShape2D_2cyyq")
