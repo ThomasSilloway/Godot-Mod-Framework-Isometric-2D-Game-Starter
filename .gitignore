@@ -20,3 +20,4 @@ mono_crash.*.json
 *.exe
 *.zip
 *.pck
+scripts/python/__pycache__/
