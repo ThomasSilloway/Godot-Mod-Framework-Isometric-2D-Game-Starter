@@ -8,6 +8,8 @@ const ISOMETRIC_Y_FACTOR: float = 0.5  # Down component
 
 signal direction_changed(direction: Vector2)
 
+var _last_angle: float = -1  # Track the last angle to detect actual changes
+
 # Movement handling
 func _physics_process(delta: float) -> void:
 	# Get input direction
@@ -27,23 +29,20 @@ func _physics_process(delta: float) -> void:
 	if input_direction.length() > 0:
 		input_direction = input_direction.normalized()
 		
-		# Emit signal for animation changes
-		direction_changed.emit(input_direction)
-	
-	# Convert input to isometric movement vector
-	var isometric_direction = convert_to_isometric(input_direction)
+		 # Calculate current angle
+		var current_angle = fmod(rad_to_deg(input_direction.angle()) + 360.0, 360.0)
+		
+		# Only emit if the angle has changed or we're starting movement
+		if abs(current_angle - _last_angle) > 0.01:  # Small epsilon for float comparison
+			direction_changed.emit(input_direction)
+			_last_angle = current_angle
+	else:
+		# If we stopped moving and we weren't already stopped
+		if _last_angle != -1:
+			direction_changed.emit(Vector2.ZERO)
+			_last_angle = -1
 	
 	# Set velocity and move
-	velocity = isometric_direction * speed
+	velocity = input_direction * speed * delta
+	velocity.y *= ISOMETRIC_Y_FACTOR
 	move_and_slide()
-
-# Convert standard input direction to isometric movement vector
-func convert_to_isometric(direction: Vector2) -> Vector2:
-	var iso_direction = Vector2.ZERO
-	
-	# Isometric conversion - right/left movement affects both X and Y
-	iso_direction.x = direction.x * ISOMETRIC_X_FACTOR - direction.y * ISOMETRIC_X_FACTOR
-	# Up/down affects primarily Y axis but with adjusted factor
-	iso_direction.y = direction.x * ISOMETRIC_Y_FACTOR + direction.y * ISOMETRIC_Y_FACTOR
-	
-	return iso_direction
