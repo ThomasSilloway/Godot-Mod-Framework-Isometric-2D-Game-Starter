@@ -1,4 +1,4 @@
-# Godot Mod Framework Menus
+# Godot Mod Framework Isometric 2D Game Starter
 A Godot game template that is set up for mod support from the beginning
 
 This Menus version includes a main menu and a settings menu
@@ -9,25 +9,14 @@ Inspired by: https://www.youtube.com/watch?v=tTdToEu6x8U and https://www.youtube
 
 Build the game as a collection of mods to ensure that your game properly supports modders upon release
 
-## Versions
+## Description
 
-### Godot Mod Framework
- - Basic version that loads a single mod and prints a hello world message. Can be used as a solid baseline for custom implementation
- - [GitHub Repo](https://github.com/ThomasSilloway/Godot-Mod-Framework)
+### Template
+ - Built as a template from [Godot-Mod-Framework-Menus](https://github.com/ThomasSilloway/Godot-Mod-Framework-Menus)
 
-### Godot Mod Framework Menus
- - Version that includes a main menu and settings menu setup as mods
- - (this repo)
-
-### Mods built with this template
- - [Full Game Mod (Flappy Bird Clone)](https://github.com/ThomasSilloway/Godot-Mod-Framework-Flappy-Bird-Clone)
-
-## Getting Started
-
-This repository is set up as a GitHub template. To create your own project based on this template:
-
-1. Visit: [Github Template Docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
-2. Follow the instructions to create a new repository from this template
+### Full Game Mod (this repo)
+ - Uses TileMapLayers to create an environment
+ - See [Task List](https://github.com/ThomasSilloway/Godot-Mod-Framework-Isometric-2D-Game-Starter/blob/main/ai_coding_prompts/task_list.txt) for upcoming features
 
 ## Tech Details
 
@@ -36,6 +25,7 @@ This repository is set up as a GitHub template. To create your own project based
 - `mainmenu` is the first mod that displays the main menu for the project.
 - `settings_menu` is the mod that injects a settings button into the main menu which opens a settings menu
   - The settings menu updates the values in the `SettingsManager` in the `main` project automatically by having its own placeholder `SettingsManager` autoloaded which is not included in the exported project. Surprisingly having a file in the auto load that is not included in the exported project doesn't break anything.
+- `isometric_2d_prototype` is the mod that is used as the main game when you hit the `Play` button in the main menu
 
 ## Usage - Manual
 
@@ -71,7 +61,7 @@ git merge template/[branch to merge] --allow-unrelated-histories
 For more details, see: https://help.github.com/en/articles/adding-a-remote
 
 ## Areas to explore in the future
- - Add mid game menu that pauses the game and allows you to resume, settings, or quit
+ - TODO
 
 ## Credits
 
