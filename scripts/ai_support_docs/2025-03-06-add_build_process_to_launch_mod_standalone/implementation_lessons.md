@@ -44,3 +44,13 @@
 5. Testing Scenarios
    - Include both success and failure test cases
    - Specify expected behavior for error conditions
+
+6. Request impelemtnation lessons
+    - Include a section to request implementation lessons to be created from something like this prompt:
+    ```
+    Okay can you go through our message history and summarize the things that I had to manually work with you on that the #file:spec.md was insuffient for?
+
+    Please output them in markdown format and put them in the same folder as this spec
+    ```
+    - This will help us to improve the specs and make them more useful for the AI in the future
+    

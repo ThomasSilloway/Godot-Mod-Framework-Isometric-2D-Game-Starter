@@ -876,20 +876,22 @@ animations = [{
 "speed": 24.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2cyyq"]
-size = Vector2(20, 69)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_44vbx"]
+radius = 16.0
+height = 50.0
 
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("2_ilwmq")
 speed = 25000.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+y_sort_enabled = true
 position = Vector2(0, -29)
 sprite_frames = SubResource("SpriteFrames_w7x6r")
-animation = &"walk_045"
-frame_progress = 0.453147
+animation = &"walk_180"
 script = ExtResource("1_daw84")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, -29.5)
-shape = SubResource("RectangleShape2D_2cyyq")
+position = Vector2(0, 1)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_44vbx")
