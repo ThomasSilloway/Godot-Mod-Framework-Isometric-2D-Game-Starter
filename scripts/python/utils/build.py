@@ -2,12 +2,15 @@
 # dependencies = [
 #   "pathlib>=1.0.1",
 #   "PyYAML>=6.0.1",
+#   "pywin32>=306",
 # ]
 # ///
 
 """Build utilities for build scripts."""
 
 import os
+import sys
+import time
 import subprocess
 import shutil
 from pathlib import Path
@@ -37,14 +40,37 @@ def run_game(build_dir: Path) -> bool:
     """
     from scripts.python.config import config
     
-    exe_path = build_dir / "startup.exe"  # Use startup.exe instead of console version
+    # Use console version for output in terminal
+    exe_path = build_dir / config.startup_console_exe
     if not exe_path.exists():
         print(f"No executable found at: {exe_path}")
         return False
         
     try:
         os.chdir(str(build_dir))
-        subprocess.Popen([str(exe_path)], creationflags=subprocess.CREATE_NEW_CONSOLE)
+        # Run in same console and wait for it to start
+        process = subprocess.Popen([str(exe_path)], creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
+        
+        # Give it a moment to start
+        time.sleep(0.5)
+        
+        if sys.platform == "win32":
+            try:
+                import win32gui
+                import win32con
+                
+                def bring_to_front(hwnd, _):
+                    if "Godot" in win32gui.GetWindowText(hwnd):
+                        win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+                        win32gui.SetForegroundWindow(hwnd)
+                        return False
+                    return True
+                
+                # Find and focus the Godot window
+                win32gui.EnumWindows(bring_to_front, None)
+            except ImportError:
+                print("Note: win32gui not available - window focus not set")
+                
         return True
     except Exception as e:
         print(f"Failed to run game: {e}")
