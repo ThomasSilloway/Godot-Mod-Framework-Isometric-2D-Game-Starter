@@ -44,6 +44,17 @@
 			"problemMatcher": []
 		},
 		{
+			"label": "Build Isometric 2D Prototype (Standalone)",
+			"type": "shell",
+			"command": "${workspaceFolder}/scripts/build_standalone.bat",
+			"args": ["isometric_2d_prototype"],
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		{
 			"label": "Run Godot Game",
 			"type": "shell",
 			"command": "uv run c:/GithubRepos/Test/run-godot-game.py",

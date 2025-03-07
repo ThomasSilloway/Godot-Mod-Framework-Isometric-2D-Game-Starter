@@ -42,11 +42,15 @@ def export_godot_project(project_name: str, build_dir: Path, is_mod: bool = True
             preset = "Windows Desktop"  # Using the actual preset name from export_presets.cfg
             export_type = "--export-pack"  # Use --export-pack for mods
         else:
-            export_name = f"{project_name}.exe"  # Add .exe extension for startup project
+            export_name = f"{project_name}.exe"  # Add .exe extension for executable
             output_file = build_dir / export_name
-            preset = "Windows Desktop"  # Using the actual preset name from export_presets.cfg
-            export_type = "--export-release"  # Use --export-release for startup project
+            preset = "Windows Executable"  # Use Windows Executable preset for standalone builds
+            export_type = "--export-release"  # Use --export-release for executable
         
+        # Create mods directory if needed
+        if is_mod:
+            (build_dir / config.mods_dir).mkdir(exist_ok=True)
+            
         # Execute Godot export command
         command = [
             str(config.godot_path),
@@ -84,4 +88,3 @@ def export_godot_project(project_name: str, build_dir: Path, is_mod: bool = True
     finally:
         # Restore original directory
         os.chdir(original_dir)
-        # print(f"Restored working directory to: {os.getcwd()}")
