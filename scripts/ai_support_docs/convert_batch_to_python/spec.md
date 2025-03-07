@@ -152,3 +152,17 @@ scripts/
 - Make the code modular and reusable
 - Include inline comments explaining complex operations
 - Make sure all paths work correctly on Windows
+
+## Testing Guidelines
+
+### PowerShell Command Formatting
+When testing scripts in PowerShell, use proper PowerShell syntax:
+```powershell
+# Wrong - using bash/cmd syntax:
+cd some/path && ./script.bat
+
+# Correct - using PowerShell syntax:
+Push-Location some/path; ./script.bat; Pop-Location
+```
+
+### Test Verification

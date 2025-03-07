@@ -1,7 +1,7 @@
 # /// script
 # dependencies = [
-#   "argparse>=1.4.0",
 #   "pathlib>=1.0.1",
+#   "PyYAML>=6.0.1",
 # ]
 # ///
 
@@ -11,13 +11,16 @@ This script builds the startup project and all mods in the correct order.
 """
 
 import sys
-from build_utils import (
+from pathlib import Path
+
+# Change to absolute imports
+from scripts.python.config import config
+from scripts.python.utils import (
     get_formatted_datetime,
     create_build_directories,
     ensure_mod_order_template,
     export_godot_project,
-    run_game,
-    STARTUP_PROJECT
+    run_game
 )
 
 MODS = [
@@ -40,7 +43,7 @@ def main():
 
     # First build startup project
     print(f"\nBuilding startup project...")
-    if not export_godot_project(STARTUP_PROJECT, build_dir, is_mod=False):
+    if not export_godot_project(config.startup_project, build_dir, is_mod=False):
         print("Failed to export startup project")
         sys.exit(1)
     print("Successfully exported startup project")

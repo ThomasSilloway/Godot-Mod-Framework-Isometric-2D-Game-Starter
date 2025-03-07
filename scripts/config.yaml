@@ -1,0 +1,10 @@
+godot:
+  path: "C:\\Godot\\Godot_v4.4-beta4_win64"
+  version: "4.4-beta4"
+
+build:
+  mods_dir: "mods"
+  mod_extension: ".zip"
+  startup_project: "startup"
+  startup_exe: "startup.exe"
+  startup_console_exe: "startup.console.exe"

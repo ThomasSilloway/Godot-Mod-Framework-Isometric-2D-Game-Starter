@@ -1,7 +1,8 @@
 # /// script
 # dependencies = [
-#   "argparse>=1.4.0",
 #   "pathlib>=1.0.1",
+#   "argparse>=1.4.0",
+#   "PyYAML>=6.0.1",
 # ]
 # ///
 
@@ -9,14 +10,14 @@
 
 This script builds a single mod and copies it to the latest build directory.
 If no build exists, it creates a new one and copies the mod_order template.
-
-Dependencies (for uv):
-- argparse
 """
 
 import argparse
 import sys
-from build_utils import (
+from pathlib import Path
+
+from config import config
+from utils import (
     get_formatted_datetime,
     create_build_directories,
     get_latest_build,
@@ -35,9 +36,8 @@ def main():
     build_time = get_formatted_datetime()
     print(f"Building mod {args.mod_name} with timestamp {build_time}")
 
-    
-
-    # Check for previous build and copy files if it exists
+    # IMPORTANT: We must check for previous builds BEFORE creating the new build directory
+    # Otherwise get_latest_build will find our new empty directory instead of the previous build
     if prev_build := get_latest_build():
         if prev_build.name != build_time:  # Don't copy from self
             print(f"Found previous build: {prev_build}")

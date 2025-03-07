@@ -1,2 +1,5 @@
 @echo off
-uv run --with PyYAML --with pathlib --with argparse %~dp0\python\build.py %*
+cd /d %~dp0
+cd ..
+set PYTHONPATH=%CD%
+uv run scripts/python/build.py %*
