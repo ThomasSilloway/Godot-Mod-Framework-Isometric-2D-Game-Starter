@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=4 uid="uid://do43p43wy2rg"]
 
 [ext_resource type="TileSet" uid="uid://rmqy5p3vefok" path="res://isometric_2d_prototype/tilemap/main_tilemap.tres" id="1_jxefx"]
-[ext_resource type="PackedScene" uid="uid://jttykfy1nef" path="res://isometric_2d_prototype/character/character.tscn" id="2_33u8c"]
+[ext_resource type="PackedScene" uid="uid://b1nm12mnu115" path="res://isometric_2d_prototype/characters/proto_male_kenny/character_male_kenny.tscn" id="2_33u8c"]
 
 [node name="MainScene" type="Node2D"]
 
@@ -20,16 +20,6 @@ tile_set = ExtResource("1_jxefx")
 [node name="YSortables" type="Node2D" parent="Tilemap"]
 y_sort_enabled = true
 
-[node name="Character" parent="Tilemap/YSortables" instance=ExtResource("2_33u8c")]
-y_sort_enabled = true
-position = Vector2(1588, -568)
-scale = Vector2(3, 3)
-
-[node name="Camera2D" type="Camera2D" parent="Tilemap/YSortables/Character"]
-position = Vector2(0, -59.6667)
-scale = Vector2(0.333333, 0.333333)
-zoom = Vector2(0.5, 0.5)
-
 [node name="TileMapLayer-Walls-EW" type="TileMapLayer" parent="Tilemap/YSortables"]
 y_sort_enabled = true
 tile_map_data = PackedByteArray("AAD///f/AgAAAAAAAAD///b/AgAAAAAAAAD///X/AgAAAAAAAAADAPf/AgAAAAAAAAADAPb/AgAAAAAAAAADAPX/AgAAAAAAAAADAPT/AgAAAAAAAAADAPP/AgAAAAAAAAD///T/AgAAAAAAAAD///P/AgAAAAAAAAA=")
@@ -39,3 +29,11 @@ tile_set = ExtResource("1_jxefx")
 y_sort_enabled = true
 tile_map_data = PackedByteArray("AAD///f/AgABAAAAAAAAAPf/AgABAAAAAAABAPf/AgABAAAAAAACAPf/AgABAAAAAAD///L/AgABAAAAAAAAAPL/AgABAAAAAAABAPL/AgABAAAAAAACAPL/AgABAAAAAAADAPP/AgAAAAAAAAA=")
 tile_set = ExtResource("1_jxefx")
+
+[node name="Character-Male-Kenny" parent="Tilemap/YSortables" instance=ExtResource("2_33u8c")]
+position = Vector2(1816, -699)
+scale = Vector2(1.75, 1.75)
+
+[node name="Camera2D" type="Camera2D" parent="Tilemap/YSortables/Character-Male-Kenny"]
+scale = Vector2(0.999999, 0.999999)
+zoom = Vector2(0.5, 0.5)
