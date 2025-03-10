@@ -281,6 +281,7 @@ radius = 16.0
 height = 50.0
 
 [node name="Character" type="CharacterBody2D"]
+y_sort_enabled = true
 script = ExtResource("1_4l246")
 speed = 25000.0
 
