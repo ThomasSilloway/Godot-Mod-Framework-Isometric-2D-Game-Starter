@@ -241,9 +241,6 @@ texture_region_size = Vector2i(256, 256)
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8osu4"]
 texture = ExtResource("6_rhjpl")
 texture_region_size = Vector2i(256, 512)
-0:1/0 = 0
-0:2/0 = 0
-0:3/0 = 0
 0:0/0 = 0
 0:0/0/texture_origin = Vector2i(0, 192)
 0:0/0/y_sort_origin = -220
@@ -460,7 +457,6 @@ terrain_set_0/terrain_3/name = "CornMedium"
 terrain_set_0/terrain_3/color = Color(0.375, 0.5, 0.25, 1)
 terrain_set_0/terrain_4/name = "CornMature"
 terrain_set_0/terrain_4/color = Color(0.28125, 0.5, 0.25, 1)
-navigation_layer_0/layers = 1
 sources/22 = SubResource("TileSetAtlasSource_rn4jq")
 sources/39 = SubResource("TileSetAtlasSource_3yoro")
 sources/56 = SubResource("TileSetAtlasSource_mpesv")
