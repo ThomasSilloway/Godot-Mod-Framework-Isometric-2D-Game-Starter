@@ -1,6 +1,6 @@
 [gd_scene load_steps=60 format=3 uid="uid://b1nm12mnu115"]
 
-[ext_resource type="Script" uid="uid://dxc7m4x3j08tm" path="res://isometric_2d_prototype/character_controller_WASD/player.gd" id="1_4l246"]
+[ext_resource type="Script" uid="uid://dxc7m4x3j08tm" path="res://isometric_2d_prototype/character_controller_WASD/character_controller_WASD.gd" id="1_4l246"]
 [ext_resource type="Texture2D" uid="uid://bl1jb7a2kiyb0" path="res://isometric_2d_prototype/characters/proto_male_kenny/content/idle/Male_3_Idle0.png" id="2_2b84m"]
 [ext_resource type="Texture2D" uid="uid://ber7tswhftkbd" path="res://isometric_2d_prototype/characters/proto_male_kenny/content/idle/Male_1_Idle0.png" id="2_bgibt"]
 [ext_resource type="Texture2D" uid="uid://dhyf36rjw05hm" path="res://isometric_2d_prototype/characters/proto_male_kenny/content/walk_up_right/Male_0_Run0.png" id="2_opekg"]

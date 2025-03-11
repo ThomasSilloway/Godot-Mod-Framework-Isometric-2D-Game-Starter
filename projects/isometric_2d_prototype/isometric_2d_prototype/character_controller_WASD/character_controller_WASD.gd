@@ -43,6 +43,6 @@ func _physics_process(delta: float) -> void:
 			_last_angle = -1
 	
 	# Set velocity and move
-	velocity = input_direction * speed * delta
+	velocity = input_direction * speed * delta * 1000
 	velocity.y *= ISOMETRIC_Y_FACTOR
 	move_and_slide()

@@ -20,9 +20,9 @@ tile_set = ExtResource("1_exmi8")
 y_sort_enabled = true
 
 [node name="Character-Male-Kenny" parent="Tilemap/YSortables" instance=ExtResource("2_33u8c")]
-position = Vector2(2007, 959)
+position = Vector2(5622, -4.00002)
 scale = Vector2(1.25, 1.25)
-speed = 50000.0
+speed = 50.0
 
 [node name="Camera2D" type="Camera2D" parent="Tilemap/YSortables/Character-Male-Kenny"]
 scale = Vector2(0.999999, 0.999999)
