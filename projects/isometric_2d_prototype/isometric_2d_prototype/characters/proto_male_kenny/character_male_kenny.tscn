@@ -283,6 +283,7 @@ height = 50.0
 [node name="Character" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_it5sm")
+arrival_threshold = 10.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 y_sort_enabled = true
