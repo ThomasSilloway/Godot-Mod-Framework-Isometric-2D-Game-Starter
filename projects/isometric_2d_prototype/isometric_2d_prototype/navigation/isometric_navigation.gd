@@ -7,6 +7,8 @@ var _current_path: PackedVector2Array
 		_debug_draw = value
 		queue_redraw()
 
+var _highlighted_tile: Vector2i
+
 func _ready() -> void:
 	var tilemap : TileMapLayer = get_node("%TileMapLayer-Ground")
 	if tilemap:
@@ -58,8 +60,16 @@ func get_debug_points() -> Array:
 			points.append({"position": world_pos, "solid": is_solid})
 	return points
 
+func highlight_tile_at(world_pos: Vector2) -> void:
+	_highlighted_tile = _world_to_grid(world_pos)
+	queue_redraw()
+	
+func get_tile_center(world_pos: Vector2) -> Vector2:
+	var grid_pos = _world_to_grid(world_pos)
+	return _astar.get_point_position(grid_pos)
+
 func _draw() -> void:
-	if not _debug_draw: # or _current_path.is_empty():
+	if not _debug_draw:
 		return
 		
 	# Draw the path
@@ -74,3 +84,10 @@ func _draw() -> void:
 		for point in points:
 			var color = Color.RED if point.solid else Color.GREEN
 			draw_circle(point.position, 4.0, color)
+	
+	# Draw highlighted tile
+	if _highlighted_tile:
+		var tile_center = _astar.get_point_position(_highlighted_tile)
+		var size := Vector2(32, 32)
+		var rect := Rect2(tile_center - size/2, size)
+		draw_rect(rect, Color.ORANGE, false, 2.0)

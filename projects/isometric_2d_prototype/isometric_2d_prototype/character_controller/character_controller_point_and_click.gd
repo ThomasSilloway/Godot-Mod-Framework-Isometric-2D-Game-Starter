@@ -8,10 +8,22 @@ signal direction_changed(direction: Vector2)
 var _current_path: PackedVector2Array
 var _moving := false
 var _current_path_index := 0
+var _last_click_pos: Vector2  # New variable
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var target_pos := get_global_mouse_position()
+		
+		# Draw debug square at exact click position
+		var debug_draw = get_node("%World-Draw-Debug")
+		if debug_draw:
+			debug_draw.add_click_position(target_pos)
+			
+		# Highlight tile
+		var navigation = get_node("%Isometric-Navigation")
+		if navigation:
+			navigation.highlight_tile_at(target_pos)
+			
 		_set_target_position(target_pos)
 
 func _physics_process(delta: float) -> void:
@@ -30,7 +42,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Check if we've reached the next point
 	var distance_to_next_point := global_position.distance_to(next_point)
-	print("Distance to next point: ", distance_to_next_point)
+	# print("Distance to next point: ", distance_to_next_point)
 	if distance_to_next_point < arrival_threshold:
 		global_position = next_point  # Set exact position when arriving
 		_current_path_index += 1
@@ -42,7 +54,7 @@ func _physics_process(delta: float) -> void:
 			_current_path_index = 0
 
 func _set_target_position(target_pos: Vector2) -> void:
-	print("Setting target position to: ", target_pos)
+	# print("Setting target position to: ", target_pos)
 	var navigation = get_node("%Isometric-Navigation")
 	if not navigation:
 		push_warning("Navigation node not found")

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=4 uid="uid://do43p43wy2rg"]
+[gd_scene load_steps=5 format=4 uid="uid://do43p43wy2rg"]
 
 [ext_resource type="TileSet" uid="uid://gfg6by1pxr0" path="res://isometric_2d_prototype/tilemap_proto_02_kenny_farm/tilemap_proto_02_kenny_farm.tres" id="1_exmi8"]
 [ext_resource type="PackedScene" uid="uid://b1nm12mnu115" path="res://isometric_2d_prototype/characters/proto_male_kenny/character_male_kenny.tscn" id="2_33u8c"]
 [ext_resource type="Script" uid="uid://casvvv2sohl6a" path="res://isometric_2d_prototype/navigation/isometric_navigation.gd" id="3_exmi8"]
+[ext_resource type="Script" uid="uid://d33vp0wvoypy2" path="res://isometric_2d_prototype/debug/world_debug_draw.gd" id="4_q8o2a"]
 
 [node name="MainScene" type="Node2D"]
 
@@ -53,3 +54,7 @@ tile_set = ExtResource("1_exmi8")
 unique_name_in_owner = true
 script = ExtResource("3_exmi8")
 _debug_draw = true
+
+[node name="World-Draw-Debug" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_q8o2a")
