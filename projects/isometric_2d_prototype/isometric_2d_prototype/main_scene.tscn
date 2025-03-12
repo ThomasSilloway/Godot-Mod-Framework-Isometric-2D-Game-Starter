@@ -22,7 +22,6 @@ tile_set = ExtResource("1_exmi8")
 y_sort_enabled = true
 
 [node name="Character-Male-Kenny" parent="Tilemap/YSortables" instance=ExtResource("2_33u8c")]
-position = Vector2(-4, 0)
 scale = Vector2(1.25, 1.25)
 speed = 50.0
 

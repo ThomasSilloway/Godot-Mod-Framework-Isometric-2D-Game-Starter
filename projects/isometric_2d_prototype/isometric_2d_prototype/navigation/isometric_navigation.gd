@@ -27,23 +27,47 @@ func _setup_grid(tilemap: TileMapLayer) -> void:
 	_astar.update()
 
 func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
-	_current_path = _astar.get_point_path(_world_to_grid(start_pos), _world_to_grid(end_pos))
+	var start_grid_pos = _world_to_grid(start_pos)
+	var end_grid_pos = _world_to_grid(end_pos)
+	print("Start Grid Position: ", start_grid_pos)
+	print("End Grid Position: ", end_grid_pos)
+	
+	# Get path in grid coordinates
+	var grid_path = _astar.get_id_path(start_grid_pos, end_grid_pos)
+	
+	# Convert grid path to world positions with proper tile center adjustment
+	_current_path = PackedVector2Array()
+	for grid_point in grid_path:
+		var world_point = _grid_to_world(Vector2i(grid_point.x, grid_point.y))
+		_current_path.append(world_point)
+	
+	print("Calculated Path: ", _current_path)
 	queue_redraw()
 	return _current_path
 
 func _world_to_grid(pos: Vector2) -> Vector2i:
 	var cell_size := _astar.cell_size
-	var grid_pos := Vector2i()
 	
 	# Convert isometric world coordinates to grid coordinates
-	var local_x := pos.x
-	var local_y := pos.y
+	# Formula for isometric projection
+	var grid_x = (pos.x / (cell_size.x/2) + pos.y / (cell_size.y/2)) / 2
+	var grid_y = (pos.y / (cell_size.y/2) - pos.x / (cell_size.x/2)) / 2
 	
-	# Convert to grid coordinates
-	grid_pos.x = floor((local_x / cell_size.x + local_y / cell_size.y) / 2.0)
-	grid_pos.y = floor((local_y / cell_size.y - local_x / cell_size.x) / 2.0)
+	return Vector2i(floor(grid_x), floor(grid_y))
+
+# Convert grid coordinates back to world positions
+func _grid_to_world(grid_pos: Vector2i) -> Vector2:
+	var cell_size := _astar.cell_size
 	
-	return grid_pos
+	# Convert grid coordinates to isometric world coordinates
+	var world_x = (grid_pos.x - grid_pos.y) * (cell_size.x/2)
+	var world_y = (grid_pos.x + grid_pos.y) * (cell_size.y/2)
+	
+	return Vector2(world_x, world_y)
+
+func get_tile_center(world_pos: Vector2) -> Vector2:
+	var grid_pos = _world_to_grid(world_pos)
+	return _grid_to_world(grid_pos)
 
 func is_position_valid(pos: Vector2) -> bool:
 	var grid_pos := _world_to_grid(pos)
@@ -64,10 +88,6 @@ func highlight_tile_at(world_pos: Vector2) -> void:
 	_highlighted_tile = _world_to_grid(world_pos)
 	queue_redraw()
 	
-func get_tile_center(world_pos: Vector2) -> Vector2:
-	var grid_pos = _world_to_grid(world_pos)
-	return _astar.get_point_position(grid_pos)
-
 func _draw() -> void:
 	if not _debug_draw:
 		return
