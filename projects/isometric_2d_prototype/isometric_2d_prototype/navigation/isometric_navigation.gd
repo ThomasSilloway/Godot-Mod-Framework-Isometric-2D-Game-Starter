@@ -8,6 +8,7 @@ var _current_path: PackedVector2Array
 		queue_redraw()
 
 var _highlighted_tile: Vector2i
+var _click_position: Vector2  # Added to store the actual click position
 
 func _ready() -> void:
 	var tilemap : TileMapLayer = get_node("%TileMapLayer-Ground")
@@ -41,6 +42,7 @@ func _setup_grid(tilemap: TileMapLayer) -> void:
 	print("AStar world position for grid ", grid_pos, ": ", astar_world_pos)
 
 func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
+	_click_position = end_pos  # Store the actual click position for debugging
 	var start_grid_pos = _world_to_grid(start_pos)
 	var end_grid_pos = _world_to_grid(end_pos)
 	print("Start Grid Position: ", start_grid_pos)
@@ -66,15 +68,12 @@ func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
 func _world_to_grid(pos: Vector2) -> Vector2i:
 	var cell_size := _astar.cell_size
 	
-	# Quarter-cell offset to account for isometric tile center positioning
-	var adjusted_x = pos.x + (cell_size.x / 4)
-	var adjusted_y = pos.y + (cell_size.y / 4)
+	# Direct isometric conversion without the quarter-cell offset which was causing issues
+	var grid_x = (pos.x / (cell_size.x/2) + pos.y / (cell_size.y/2)) / 2
+	var grid_y = (pos.y / (cell_size.y/2) - pos.x / (cell_size.x/2)) / 2
 	
-	# Convert isometric world coordinates to grid coordinates
-	var grid_x = (adjusted_x / (cell_size.x/2) + adjusted_y / (cell_size.y/2)) / 2
-	var grid_y = (adjusted_y / (cell_size.y/2) - adjusted_x / (cell_size.x/2)) / 2
-	
-	return Vector2i(floor(grid_x), floor(grid_y))
+	# Find the closest grid center - this is more accurate than just flooring
+	return Vector2i(round(grid_x), round(grid_y))
 
 # Convert grid coordinates back to world positions
 func _grid_to_world(grid_pos: Vector2i) -> Vector2:
@@ -119,6 +118,7 @@ func get_debug_points() -> Array:
 	return points
 
 func highlight_tile_at(world_pos: Vector2) -> void:
+	_click_position = world_pos  # Store the actual click position
 	_highlighted_tile = _world_to_grid(world_pos)
 	queue_redraw()
 	
@@ -150,6 +150,11 @@ func _draw() -> void:
 		var size := Vector2(32, 32)
 		var rect := Rect2(tile_center - size/2, size)
 		draw_rect(rect, Color.ORANGE, false, 2.0)
+		
+		# Draw a marker at the actual click position to show the difference
+		if _click_position:
+			draw_circle(_click_position, 6.0, Color.BLUE)
+			draw_line(_click_position, tile_center, Color.MAGENTA, 2.0)
 
 # Test function to compare our conversions with AStar's world positions
 func debug_coordinate_systems(world_pos: Vector2) -> void:
@@ -178,3 +183,27 @@ func get_astar_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
 		world_path.append(_astar.get_point_position(Vector2i(grid_point.x, grid_point.y)))
 	
 	return world_path
+
+# Add a helper function to get the closest valid grid position
+func get_closest_valid_grid_position(pos: Vector2) -> Vector2i:
+	var grid_pos = _world_to_grid(pos)
+	
+	# If the calculated grid position is not valid, find the closest valid one
+	if not _astar.is_in_boundsv(grid_pos):
+		var closest_distance := INF
+		var closest_pos := Vector2i()
+		
+		# Check surrounding grid cells to find the closest valid one
+		for x in range(-1, 2):
+			for y in range(-1, 2):
+				var test_pos = grid_pos + Vector2i(x, y)
+				if _astar.is_in_boundsv(test_pos):
+					var world_test_pos = _grid_to_world(test_pos)
+					var distance = pos.distance_to(world_test_pos)
+					if distance < closest_distance:
+						closest_distance = distance
+						closest_pos = test_pos
+		
+		return closest_pos
+	
+	return grid_pos
