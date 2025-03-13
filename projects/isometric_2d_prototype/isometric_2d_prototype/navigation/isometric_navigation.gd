@@ -20,17 +20,35 @@ func _setup_grid(tilemap: TileMapLayer) -> void:
 	var map_rect: Rect2i = tilemap.get_used_rect()
 	
 	_astar.cell_size = Vector2(256, 128) # Isometric tile size
-	_astar.offset = Vector2.ZERO 
+	_astar.offset = -Vector2(128, 64)
 	_astar.region = map_rect
 	_astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ALWAYS
 	_astar.cell_shape = AStarGrid2D.CELL_SHAPE_ISOMETRIC_DOWN
 	_astar.update()
+	
+	# Print debug info to understand coordinate system
+	print("AStar Region: ", _astar.region)
+	var test_pos = Vector2(0, 0)
+	var grid_pos = _world_to_grid(test_pos)
+	print("World (0,0) → Our grid: ", grid_pos)
+	
+	# Let's check a grid position to world position conversion
+	var world_pos = _grid_to_world(grid_pos)
+	print("Grid ", grid_pos, " → World: ", world_pos)
+	
+	# Check AStar's position for this grid coordinate
+	var astar_world_pos = _astar.get_point_position(grid_pos)
+	print("AStar world position for grid ", grid_pos, ": ", astar_world_pos)
 
 func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
 	var start_grid_pos = _world_to_grid(start_pos)
 	var end_grid_pos = _world_to_grid(end_pos)
 	print("Start Grid Position: ", start_grid_pos)
 	print("End Grid Position: ", end_grid_pos)
+	
+	# Debug position conversions
+	print("Start World: ", start_pos, " → Grid: ", start_grid_pos, " → Back to World: ", _grid_to_world(start_grid_pos))
+	print("End World: ", end_pos, " → Grid: ", end_grid_pos, " → Back to World: ", _grid_to_world(end_grid_pos))
 	
 	# Get path in grid coordinates
 	var grid_path = _astar.get_id_path(start_grid_pos, end_grid_pos)
@@ -48,10 +66,13 @@ func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
 func _world_to_grid(pos: Vector2) -> Vector2i:
 	var cell_size := _astar.cell_size
 	
+	# Quarter-cell offset to account for isometric tile center positioning
+	var adjusted_x = pos.x + (cell_size.x / 4)
+	var adjusted_y = pos.y + (cell_size.y / 4)
+	
 	# Convert isometric world coordinates to grid coordinates
-	# Formula for isometric projection
-	var grid_x = (pos.x / (cell_size.x/2) + pos.y / (cell_size.y/2)) / 2
-	var grid_y = (pos.y / (cell_size.y/2) - pos.x / (cell_size.x/2)) / 2
+	var grid_x = (adjusted_x / (cell_size.x/2) + adjusted_y / (cell_size.y/2)) / 2
+	var grid_y = (adjusted_y / (cell_size.y/2) - adjusted_x / (cell_size.x/2)) / 2
 	
 	return Vector2i(floor(grid_x), floor(grid_y))
 
@@ -59,11 +80,19 @@ func _world_to_grid(pos: Vector2) -> Vector2i:
 func _grid_to_world(grid_pos: Vector2i) -> Vector2:
 	var cell_size := _astar.cell_size
 	
-	# Convert grid coordinates to isometric world coordinates
+	# Convert grid coordinates to isometric world coordinates (tile centers)
 	var world_x = (grid_pos.x - grid_pos.y) * (cell_size.x/2)
 	var world_y = (grid_pos.x + grid_pos.y) * (cell_size.y/2)
 	
 	return Vector2(world_x, world_y)
+
+# Debug function to validate coordinate conversions
+func debug_coordinates(world_pos: Vector2) -> void:
+	var grid_pos = _world_to_grid(world_pos)
+	var reconverted_world = _grid_to_world(grid_pos)
+	print("Original world: ", world_pos)
+	print("Converted to grid: ", grid_pos)
+	print("Back to world: ", reconverted_world)
 
 func get_tile_center(world_pos: Vector2) -> Vector2:
 	var grid_pos = _world_to_grid(world_pos)
@@ -79,9 +108,14 @@ func get_debug_points() -> Array:
 	for x in range(region.position.x, region.position.x + region.size.x):
 		for y in range(region.position.y, region.position.y + region.size.y):
 			var grid_pos := Vector2i(x, y)
+			# Use _astar.get_point_position for the actual AStar world position
 			var world_pos := _astar.get_point_position(grid_pos)
 			var is_solid := _astar.is_point_solid(grid_pos)
-			points.append({"position": world_pos, "solid": is_solid})
+			points.append({
+				"position": world_pos, 
+				"solid": is_solid,
+				"grid_pos": grid_pos
+			})
 	return points
 
 func highlight_tile_at(world_pos: Vector2) -> void:
@@ -104,6 +138,11 @@ func _draw() -> void:
 		for point in points:
 			var color = Color.RED if point.solid else Color.GREEN
 			draw_circle(point.position, 4.0, color)
+			
+			# Draw the grid coordinates below each point
+			var text = "(%d,%d)" % [point.grid_pos.x, point.grid_pos.y]
+			var text_pos = point.position + Vector2(0, 15)
+			draw_string(ThemeDB.fallback_font, text_pos, text, HORIZONTAL_ALIGNMENT_CENTER, -1, 24, color)
 	
 	# Draw highlighted tile
 	if _highlighted_tile:
@@ -111,3 +150,31 @@ func _draw() -> void:
 		var size := Vector2(32, 32)
 		var rect := Rect2(tile_center - size/2, size)
 		draw_rect(rect, Color.ORANGE, false, 2.0)
+
+# Test function to compare our conversions with AStar's world positions
+func debug_coordinate_systems(world_pos: Vector2) -> void:
+	var our_grid_pos = _world_to_grid(world_pos)
+	var our_world_pos = _grid_to_world(our_grid_pos)
+	var astar_world_pos = _astar.get_point_position(our_grid_pos)
+	
+	print("World Position: ", world_pos)
+	print("Our System - Grid: ", our_grid_pos)
+	print("Our System - Back to world: ", our_world_pos)
+	print("AStar - World position for this grid: ", astar_world_pos)
+	
+	# Calculate conversion differences
+	var our_to_astar_diff = our_world_pos - astar_world_pos
+	print("Difference between our world pos and AStar world pos: ", our_to_astar_diff)
+
+# Add this before or after calculate_path:
+func get_astar_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
+	# Let AStar handle all coordinate conversions
+	var astar_start = _astar.get_closest_point(start_pos)
+	var astar_end = _astar.get_closest_point(end_pos)
+	var grid_path = _astar.get_id_path(astar_start, astar_end)
+	
+	var world_path = PackedVector2Array()
+	for grid_point in grid_path:
+		world_path.append(_astar.get_point_position(Vector2i(grid_point.x, grid_point.y)))
+	
+	return world_path

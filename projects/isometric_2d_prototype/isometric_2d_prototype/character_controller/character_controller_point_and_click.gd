@@ -49,7 +49,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Check if we've reached the next point
 	var distance_to_next_point := global_position.distance_to(next_point)
-	print("Distance to next point: ", distance_to_next_point, " Point: ", next_point)
+	#print("Distance to next point: ", distance_to_next_point, " Point: ", next_point)
 	
 	if distance_to_next_point < arrival_threshold:
 		global_position = next_point  # Set exact position when arriving
