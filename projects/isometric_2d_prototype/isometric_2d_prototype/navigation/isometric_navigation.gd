@@ -6,6 +6,7 @@ var _current_path: PackedVector2Array
 	set(value):
 		_debug_draw = value
 		queue_redraw()
+@export var _debug_path_logging := false  # New debug flag for controlling path logs
 
 var _highlighted_tile: Vector2i
 var _click_position: Vector2  # Added to store the actual click position
@@ -28,29 +29,32 @@ func _setup_grid(tilemap: TileMapLayer) -> void:
 	_astar.update()
 	
 	# Print debug info to understand coordinate system
-	print("AStar Region: ", _astar.region)
-	var test_pos = Vector2(0, 0)
-	var grid_pos = _world_to_grid(test_pos)
-	print("World (0,0) → Our grid: ", grid_pos)
-	
-	# Let's check a grid position to world position conversion
-	var world_pos = _grid_to_world(grid_pos)
-	print("Grid ", grid_pos, " → World: ", world_pos)
-	
-	# Check AStar's position for this grid coordinate
-	var astar_world_pos = _astar.get_point_position(grid_pos)
-	print("AStar world position for grid ", grid_pos, ": ", astar_world_pos)
+	if _debug_path_logging:
+		print("AStar Region: ", _astar.region)
+		var test_pos = Vector2(0, 0)
+		var grid_pos = _world_to_grid(test_pos)
+		print("World (0,0) → Our grid: ", grid_pos)
+		
+		# Let's check a grid position to world position conversion
+		var world_pos = _grid_to_world(grid_pos)
+		print("Grid ", grid_pos, " → World: ", world_pos)
+		
+		# Check AStar's position for this grid coordinate
+		var astar_world_pos = _astar.get_point_position(grid_pos)
+		print("AStar world position for grid ", grid_pos, ": ", astar_world_pos)
 
 func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
 	_click_position = end_pos  # Store the actual click position for debugging
 	var start_grid_pos = _world_to_grid(start_pos)
 	var end_grid_pos = _world_to_grid(end_pos)
-	print("Start Grid Position: ", start_grid_pos)
-	print("End Grid Position: ", end_grid_pos)
 	
-	# Debug position conversions
-	print("Start World: ", start_pos, " → Grid: ", start_grid_pos, " → Back to World: ", _grid_to_world(start_grid_pos))
-	print("End World: ", end_pos, " → Grid: ", end_grid_pos, " → Back to World: ", _grid_to_world(end_grid_pos))
+	if _debug_path_logging:
+		print("Start Grid Position: ", start_grid_pos)
+		print("End Grid Position: ", end_grid_pos)
+		
+		# Debug position conversions
+		print("Start World: ", start_pos, " → Grid: ", start_grid_pos, " → Back to World: ", _grid_to_world(start_grid_pos))
+		print("End World: ", end_pos, " → Grid: ", end_grid_pos, " → Back to World: ", _grid_to_world(end_grid_pos))
 	
 	# Get path in grid coordinates
 	var grid_path = _astar.get_id_path(start_grid_pos, end_grid_pos)
@@ -61,7 +65,8 @@ func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
 		var world_point = _grid_to_world(Vector2i(grid_point.x, grid_point.y))
 		_current_path.append(world_point)
 	
-	print("Calculated Path: ", _current_path)
+	if _debug_path_logging:
+		print("Calculated Path: ", _current_path)
 	queue_redraw()
 	return _current_path
 
@@ -89,9 +94,10 @@ func _grid_to_world(grid_pos: Vector2i) -> Vector2:
 func debug_coordinates(world_pos: Vector2) -> void:
 	var grid_pos = _world_to_grid(world_pos)
 	var reconverted_world = _grid_to_world(grid_pos)
-	print("Original world: ", world_pos)
-	print("Converted to grid: ", grid_pos)
-	print("Back to world: ", reconverted_world)
+	if _debug_path_logging:
+		print("Original world: ", world_pos)
+		print("Converted to grid: ", grid_pos)
+		print("Back to world: ", reconverted_world)
 
 func get_tile_center(world_pos: Vector2) -> Vector2:
 	var grid_pos = _world_to_grid(world_pos)
@@ -162,14 +168,15 @@ func debug_coordinate_systems(world_pos: Vector2) -> void:
 	var our_world_pos = _grid_to_world(our_grid_pos)
 	var astar_world_pos = _astar.get_point_position(our_grid_pos)
 	
-	print("World Position: ", world_pos)
-	print("Our System - Grid: ", our_grid_pos)
-	print("Our System - Back to world: ", our_world_pos)
-	print("AStar - World position for this grid: ", astar_world_pos)
-	
-	# Calculate conversion differences
-	var our_to_astar_diff = our_world_pos - astar_world_pos
-	print("Difference between our world pos and AStar world pos: ", our_to_astar_diff)
+	if _debug_path_logging:
+		print("World Position: ", world_pos)
+		print("Our System - Grid: ", our_grid_pos)
+		print("Our System - Back to world: ", our_world_pos)
+		print("AStar - World position for this grid: ", astar_world_pos)
+		
+		# Calculate conversion differences
+		var our_to_astar_diff = our_world_pos - astar_world_pos
+		print("Difference between our world pos and AStar world pos: ", our_to_astar_diff)
 
 # Add this before or after calculate_path:
 func get_astar_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
