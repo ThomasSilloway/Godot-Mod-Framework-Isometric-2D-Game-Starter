@@ -10,7 +10,7 @@
 
 ## Related files
  - Project Directory: projects\isometric_2d_prototype
- - isometric_2d_prototype\test_navigation_scene.md
+ 
  <insert_more_docs>
 
 ## Project Details
@@ -24,9 +24,13 @@
 
 ## Tasks
 
-### Add change_notes.md file
- - Create change_notes.md file inside the current directory of this spec file under the folder: generated
- - Add the notes from the each change you implement below
+### Update change_notes.md file
+ - If change_notes.md file doesn't exist, create it inside the current directory of this spec file under the folder: generated
+ - For each set of changes you implement, add a new section with:
+  - ## Version title Ex: v01
+    - A brief description of the changes made
+    - Details of what was implemented/fixed
+ - Always append new changes as a new section at the bottom of the file, keeping the previous change notes intact
 
 ### Create a detailed architecture document
  - Add this to the current directory of this spec file under the folder: generated
@@ -52,8 +56,8 @@
 ### Verification
 ```
 Run integration tests to verify the implementation via commandline:
- - godot --headless --script res://addons/gut/gut_cmdln.gd -d -gselect="<path_to_test_script>" -gexit
- - Example: godot --headless --script res://addons/gut/gut_cmdln.gd -d -gselect="res://tests/integration/01.gd" -gexit
+ - .\scripts\run_tests.bat <script_path>
+ - Example: .\scripts\run_tests.bat tests/integration/test_non_grid_navigation.gd
 - There are no errors
 - The log messages are as expected
 ```

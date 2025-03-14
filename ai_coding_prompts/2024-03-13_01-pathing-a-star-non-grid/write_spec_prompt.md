@@ -6,8 +6,7 @@ IMPORTANT: For each section of the new spec.md that contains <insert_...> placeh
 1. First copy that section from the template to spec.md
 2. Then ASK ME specifically for input on what should go in that placeholder
 3. Wait for my response before filling in that section
-4. Ask any follow up questions if needed to clarify what I want in that placeholder or any suggestions on how to improve it
-4. Only after getting my input for the placeholder should you fill in that section in spec.md
+4. Once section is filled in, Ask follow up questions if needed to clarify what I want in that placeholder or suggestions on how to improve it
 
 DO NOT fill in any placeholder content yourself. I want to provide the specific content for each <insert_...> section.
 
