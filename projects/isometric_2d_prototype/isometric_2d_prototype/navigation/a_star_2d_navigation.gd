@@ -13,6 +13,8 @@ var _grid_offset := Vector2i() # Offset to make all grid coordinates positive
 		_debug_draw = value
 		queue_redraw()
 @export var _debug_path_logging := false  # Debug flag for controlling path logs
+@export var _debug_show_coordinates := false
+@export var _debug_show_connections := false
 var _highlighted_tile: Vector2i
 var _click_position: Vector2  # Store the actual click position
 
@@ -228,13 +230,14 @@ func _draw() -> void:
 		for point in points:
 			draw_circle(point.position, 4.0, Color.GREEN)
 			
-			# Draw the grid coordinates below each point
-			var text = "(%d,%d)" % [point.grid_pos.x, point.grid_pos.y]
-			var text_pos = point.position + Vector2(0, 15)
-			draw_string(ThemeDB.fallback_font, text_pos, text, HORIZONTAL_ALIGNMENT_CENTER, -1, 24, Color.GREEN)
+			# Draw the grid coordinates below each point if enabled
+			if _debug_show_coordinates:
+				var text = "(%d,%d)" % [point.grid_pos.x, point.grid_pos.y]
+				var text_pos = point.position + Vector2(0, 15)
+				draw_string(ThemeDB.fallback_font, text_pos, text, HORIZONTAL_ALIGNMENT_CENTER, -1, 24, Color.GREEN)
 			
-			# Optionally draw connections between points
-			if false:  # Set to true to see connections
+			# Draw connections between points if enabled
+			if _debug_show_connections:
 				var connections = _astar.get_point_connections(point.id)
 				for connection_id in connections:
 					var connection_pos = _astar.get_point_position(connection_id)

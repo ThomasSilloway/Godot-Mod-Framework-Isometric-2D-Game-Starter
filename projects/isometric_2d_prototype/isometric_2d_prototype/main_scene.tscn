@@ -2,7 +2,7 @@
 
 [ext_resource type="TileSet" uid="uid://gfg6by1pxr0" path="res://isometric_2d_prototype/tilemap_proto_02_kenny_farm/tilemap_proto_02_kenny_farm.tres" id="1_exmi8"]
 [ext_resource type="PackedScene" uid="uid://b1nm12mnu115" path="res://isometric_2d_prototype/characters/proto_male_kenny/character_male_kenny.tscn" id="2_33u8c"]
-[ext_resource type="Script" uid="uid://casvvv2sohl6a" path="res://isometric_2d_prototype/navigation/isometric_navigation.gd" id="3_exmi8"]
+[ext_resource type="Script" uid="uid://jeu05lhxc5b5" path="res://isometric_2d_prototype/navigation/a_star_2d_navigation.gd" id="3_exmi8"]
 [ext_resource type="Script" uid="uid://d33vp0wvoypy2" path="res://isometric_2d_prototype/debug/world_debug_draw.gd" id="4_q8o2a"]
 
 [node name="MainScene" type="Node2D"]
