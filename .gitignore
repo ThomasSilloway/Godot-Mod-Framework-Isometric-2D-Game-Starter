@@ -22,3 +22,4 @@ mono_crash.*.json
 *.pck
 scripts/python/__pycache__/
 scripts/python/utils/__pycache__/
+projects/isometric_2d_prototype/addons/gut/

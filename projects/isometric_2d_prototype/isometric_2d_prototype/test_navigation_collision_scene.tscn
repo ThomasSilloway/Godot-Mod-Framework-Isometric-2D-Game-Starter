@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=4 uid="uid://vtp5j3ibsvpo"]
+
+[ext_resource type="TileSet" uid="uid://gfg6by1pxr0" path="res://isometric_2d_prototype/tilemap_proto_02_kenny_farm/tilemap_proto_02_kenny_farm.tres" id="1_x8wi7"]
+[ext_resource type="PackedScene" uid="uid://b1nm12mnu115" path="res://isometric_2d_prototype/characters/proto_male_kenny/character_male_kenny.tscn" id="2_ltwsb"]
+[ext_resource type="Script" uid="uid://jeu05lhxc5b5" path="res://isometric_2d_prototype/navigation/a_star_2d_navigation.gd" id="3_x8wi7"]
+[ext_resource type="Script" uid="uid://d33vp0wvoypy2" path="res://isometric_2d_prototype/debug/world_debug_draw.gd" id="4_lmqgp"]
+
+[node name="MainScene" type="Node2D"]
+
+[node name="Tilemap" type="Node2D" parent="."]
+
+[node name="TileMapLayer-Ground" type="TileMapLayer" parent="Tilemap"]
+unique_name_in_owner = true
+tile_map_data = PackedByteArray("AAD7//n/FgAEAAEAAAD7//r/FgAEAAEAAAD7//v/FgAEAAEAAAD7//z/FgAEAAEAAAD7//3/FgAEAAEAAAD7//7/FgAEAAEAAAD7////FgAEAAEAAAD7/wAAFgAEAAEAAAD7/wEAFgAEAAEAAAD7/wIAFgAEAAEAAAD8//n/FgAEAAEAAAD8//r/FgAEAAEAAAD8//v/FgAEAAEAAAD8//z/FgAEAAEAAAD8//3/FgAEAAEAAAD8//7/FgAEAAEAAAD8////FgAEAAEAAAD8/wAAFgAEAAEAAAD8/wEAFgAEAAEAAAD8/wIAFgAEAAEAAAD9//n/FgAEAAEAAAD9//r/FgAEAAEAAAD9//v/FgAEAAEAAAD9//z/FgAEAAEAAAD9//3/FgAEAAEAAAD9//7/FgAEAAEAAAD9////FgAEAAEAAAD9/wAAFgAEAAEAAAD9/wEAFgAEAAEAAAD9/wIAFgAEAAEAAAD+//n/FgAEAAEAAAD+//r/FgAEAAEAAAD+//v/FgAEAAEAAAD+//z/FgAEAAEAAAD+//3/FgAEAAEAAAD+//7/FgAEAAEAAAD+////FgAEAAEAAAD+/wAAFgAEAAEAAAD+/wEAFgAEAAEAAAD+/wIAFgAEAAEAAAD///n/FgAEAAEAAAD///r/FgAEAAEAAAD///v/FgAEAAEAAAD///z/FgAEAAEAAAD///3/FgAEAAEAAAD///7/FgAEAAEAAAD/////FgAEAAEAAAD//wAAFgAEAAEAAAD//wEAFgAEAAEAAAD//wIAFgAEAAEAAAAAAPn/FgAEAAEAAAAAAPr/FgAEAAEAAAAAAPv/FgAEAAEAAAAAAPz/FgAEAAEAAAAAAP3/FgAEAAEAAAAAAP7/FgAEAAEAAAAAAP//FgAEAAEAAAAAAAAAFgAEAAEAAAAAAAEAFgAEAAEAAAAAAAIAFgAEAAEAAAABAPn/FgAEAAEAAAABAPr/FgAEAAEAAAABAPv/FgAEAAEAAAABAPz/FgAEAAEAAAABAP3/FgAEAAEAAAABAP7/FgAEAAEAAAABAP//FgAEAAEAAAABAAAAFgAEAAEAAAABAAEAFgAEAAEAAAABAAIAFgAEAAEAAAACAPn/FgAEAAEAAAACAPr/FgAEAAEAAAACAPv/FgAEAAEAAAACAPz/FgAEAAEAAAACAP3/FgAEAAEAAAACAP7/FgAEAAEAAAACAP//FgAEAAEAAAACAAAAFgAEAAEAAAACAAEAFgAEAAEAAAACAAIAFgAEAAEAAAADAPn/FgAEAAEAAAADAPr/FgAEAAEAAAADAPv/FgAEAAEAAAADAPz/FgAEAAEAAAADAP3/FgAEAAEAAAADAP7/FgAEAAEAAAADAP//FgAEAAEAAAADAAAAFgAEAAEAAAADAAEAFgAEAAEAAAADAAIAFgAEAAEAAAAEAPn/FgAEAAEAAAAEAPr/FgAEAAEAAAAEAPv/FgAEAAEAAAAEAPz/FgAEAAEAAAAEAP3/FgAEAAEAAAAEAP7/FgAEAAEAAAAEAP//FgAEAAEAAAAEAAAAFgAEAAEAAAAEAAEAFgAEAAEAAAAEAAIAFgAEAAEAAAA=")
+tile_set = ExtResource("1_x8wi7")
+
+[node name="YSortables" type="Node2D" parent="Tilemap"]
+y_sort_enabled = true
+
+[node name="Character-Male-Kenny" parent="Tilemap/YSortables" instance=ExtResource("2_ltwsb")]
+scale = Vector2(1.25, 1.25)
+speed = 50.0
+
+[node name="Camera2D" type="Camera2D" parent="Tilemap/YSortables/Character-Male-Kenny"]
+scale = Vector2(0.999999, 0.999999)
+zoom = Vector2(0.75, 0.75)
+
+[node name="TileMapLayer-Walls-EW" type="TileMapLayer" parent="Tilemap/YSortables"]
+y_sort_enabled = true
+tile_map_data = PackedByteArray("AAD/////DQAAAAAAAAD///7/DQAAAAAAAAD///3/DQAAAAAAAAA=")
+tile_set = ExtResource("1_x8wi7")
+
+[node name="TileMapLayer-Walls-NS" type="TileMapLayer" parent="Tilemap/YSortables"]
+y_sort_enabled = true
+tile_map_data = PackedByteArray("AAD/////DQABAAAAAAAAAP//DQABAAAAAAABAP//DQABAAAAAAA=")
+tile_set = ExtResource("1_x8wi7")
+
+[node name="Isometric-Navigation" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_x8wi7")
+_debug_draw = true
+
+[node name="World-Draw-Debug" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_lmqgp")

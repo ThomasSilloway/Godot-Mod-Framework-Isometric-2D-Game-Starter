@@ -19,29 +19,31 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var target_pos := get_global_mouse_position()
+		_on_mouse_click(target_pos)
+
+func _on_mouse_click(target_pos: Vector2) -> void:
+	if _navigation and _navigation._debug_path_logging:
+		print("\nClick Information:")
+		print("World Click Position: ", target_pos)
+	
+	if _navigation:
+		var tile_coord = _navigation._world_to_grid(target_pos)
+		var tile_center = _navigation.get_tile_center(target_pos)
 		
-		if _navigation and _navigation._debug_path_logging:
-			print("\nClick Information:")
-			print("World Click Position: ", target_pos)
+		if _navigation._debug_path_logging:
+			print("Selected Tile Coordinate: ", tile_coord)
+			print("Selected Tile World Position: ", tile_center)
 		
-		if _navigation:
-			var tile_coord = _navigation._world_to_grid(target_pos)
-			var tile_center = _navigation.get_tile_center(target_pos)
-			
-			if _navigation._debug_path_logging:
-				print("Selected Tile Coordinate: ", tile_coord)
-				print("Selected Tile World Position: ", tile_center)
-			
-			_navigation.highlight_tile_at(target_pos)
-			
-			# Store the click position for debugging
-			_last_click_pos = target_pos
-			
-		var debug_draw = get_node("%World-Draw-Debug")
-		if debug_draw:
-			debug_draw.add_click_position(target_pos)
-			
-		_set_target_position(target_pos)
+		_navigation.highlight_tile_at(target_pos)
+		
+		# Store the click position for debugging
+		_last_click_pos = target_pos
+		
+	var debug_draw = get_node("%World-Draw-Debug")
+	if debug_draw:
+		debug_draw.add_click_position(target_pos)
+		
+	_set_target_position(target_pos)
 
 func _physics_process(delta: float) -> void:
 	if not _moving or _current_path.is_empty():

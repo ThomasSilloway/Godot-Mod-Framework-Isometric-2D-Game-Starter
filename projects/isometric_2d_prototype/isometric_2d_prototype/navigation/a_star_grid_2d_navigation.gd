@@ -1,4 +1,5 @@
 extends Node2D
+# DEPRECATED: This class uses AStarGrid2D for navigation. Please use a_star_2d_navigation.gd instead.
 
 var _astar := AStarGrid2D.new()
 var _current_path: PackedVector2Array
@@ -7,11 +8,11 @@ var _current_path: PackedVector2Array
 		_debug_draw = value
 		queue_redraw()
 @export var _debug_path_logging := false  # New debug flag for controlling path logs
-
 var _highlighted_tile: Vector2i
 var _click_position: Vector2  # Added to store the actual click position
 
 func _ready() -> void:
+	push_warning("Using deprecated AStarGrid2D navigation. Please use a_star_2d_navigation.gd instead.")
 	var tilemap : TileMapLayer = get_node("%TileMapLayer-Ground")
 	if tilemap:
 		_setup_grid(tilemap)

@@ -11,13 +11,17 @@ config_version=5
 [application]
 
 config/name="Mod-Isometric2DPrototype"
-run/main_scene="uid://do43p43wy2rg"
+run/main_scene="uid://vtp5j3ibsvpo"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
 
 window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 
 [rendering]
 
