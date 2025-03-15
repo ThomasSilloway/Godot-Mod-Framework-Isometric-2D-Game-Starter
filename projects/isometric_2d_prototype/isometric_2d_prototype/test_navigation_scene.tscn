@@ -28,9 +28,10 @@ zoom = Vector2(0.75, 0.75)
 [node name="Isometric-Navigation" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_ulshw")
-_debug_draw = true
 _debug_path_logging = true
 
 [node name="World-Draw-Debug" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_4p2rl")
+_debug_show_coordinates = true
+_debug_show_connections = true

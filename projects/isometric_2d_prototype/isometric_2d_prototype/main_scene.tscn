@@ -52,7 +52,6 @@ tile_set = ExtResource("1_exmi8")
 [node name="Isometric-Navigation" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_exmi8")
-_debug_draw = true
 
 [node name="World-Draw-Debug" type="Node2D" parent="."]
 unique_name_in_owner = true

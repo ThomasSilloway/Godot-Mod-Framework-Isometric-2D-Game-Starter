@@ -38,8 +38,6 @@ tile_set = ExtResource("1_x8wi7")
 [node name="Isometric-Navigation" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_x8wi7")
-_debug_draw = true
-_debug_show_coordinates = true
 
 [node name="World-Draw-Debug" type="Node2D" parent="."]
 unique_name_in_owner = true

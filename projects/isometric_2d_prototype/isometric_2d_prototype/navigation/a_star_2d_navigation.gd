@@ -1,5 +1,9 @@
 extends Node2D
 
+signal path_calculated(path: PackedVector2Array)
+signal pathfinding_progress_updated(info: Dictionary)
+signal grid_updated(debug_points: Array)  # Add new signal
+
 var _astar := AStar2D.new()
 var _current_path: PackedVector2Array
 var _cell_size := Vector2(256, 128) # Isometric tile size
@@ -8,20 +12,14 @@ var _id_to_grid_map := {} # Dictionary to map AStar IDs to grid coordinates
 var _map_rect: Rect2i # Store map rectangle for bounds checking
 var _grid_offset := Vector2i() # Offset to make all grid coordinates positive
 
-@export var _debug_draw := false:
-	set(value):
-		_debug_draw = value
-		queue_redraw()
 @export var _debug_path_logging := false  # Debug flag for controlling path logs
-@export var _debug_show_coordinates := false
-@export var _debug_show_connections := false
-var _highlighted_tile: Vector2i
-var _click_position: Vector2  # Store the actual click position
 
 func _ready() -> void:
 	var tilemap: TileMapLayer = get_node("%TileMapLayer-Ground")
 	if tilemap:
 		_setup_grid(tilemap)
+		# Emit debug points after grid is set up
+		emit_signal("grid_updated", get_debug_points())
 	else:
 		push_warning("Tilemap not found. Pathfinding will not work.")
 
@@ -114,7 +112,6 @@ func _get_grid_pos_from_id(id: int) -> Vector2i:
 	return Vector2i(offset_x, offset_y) - _grid_offset
 
 func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
-	_click_position = end_pos  # Store the actual click position for debugging
 	var start_grid_pos = _world_to_grid(start_pos)
 	var end_grid_pos = _world_to_grid(end_pos)
 	
@@ -144,7 +141,21 @@ func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
 	if _debug_path_logging:
 		print("Calculated Path: ", _current_path)
 	
-	queue_redraw()
+	# Emit signal with path information
+	emit_signal("path_calculated", _current_path)
+	
+	# Create and emit progress info
+	var progress_info = {
+		"path_length": _current_path.size(),
+		"start_id": start_id,
+		"end_id": end_id,
+		"visited_nodes": id_path.size(),
+		"start_grid_pos": start_grid_pos,
+		"end_grid_pos": end_grid_pos,
+		"tile_center_position": _grid_to_world(end_grid_pos),
+	}
+	emit_signal("pathfinding_progress_updated", progress_info)
+	
 	return _current_path
 
 func _get_closest_point_id(grid_pos: Vector2i) -> int:
@@ -208,54 +219,6 @@ func get_debug_points() -> Array:
 			"id": id
 		})
 	return points
-
-func highlight_tile_at(world_pos: Vector2) -> void:
-	_click_position = world_pos  # Store the actual click position
-	_highlighted_tile = _world_to_grid(world_pos)
-	queue_redraw()
-
-func _draw() -> void:
-	if not _debug_draw:
-		return
-	
-	# Draw the path
-	for i in range(_current_path.size() - 1):
-		draw_line(_current_path[i], _current_path[i + 1],
-				 Color.YELLOW,
-				 2.0)
-	
-	# Draw grid points for debugging
-	if _debug_draw:
-		var points = get_debug_points()
-		for point in points:
-			draw_circle(point.position, 4.0, Color.GREEN)
-			
-			# Draw the grid coordinates below each point if enabled
-			if _debug_show_coordinates:
-				var text = "(%d,%d)" % [point.grid_pos.x, point.grid_pos.y]
-				var text_pos = point.position + Vector2(0, 15)
-				draw_string(ThemeDB.fallback_font, text_pos, text, HORIZONTAL_ALIGNMENT_CENTER, -1, 24, Color.GREEN)
-			
-			# Draw connections between points if enabled
-			if _debug_show_connections:
-				var connections = _astar.get_point_connections(point.id)
-				for connection_id in connections:
-					var connection_pos = _astar.get_point_position(connection_id)
-					draw_line(point.position, connection_pos, Color(0, 1, 0, 0.1), 1.0)
-	
-	# Draw highlighted tile
-	if _highlighted_tile:
-		var grid_id = _get_closest_point_id(_highlighted_tile)
-		if grid_id != -1:
-			var tile_center = _astar.get_point_position(grid_id)
-			var size := Vector2(32, 32)
-			var rect := Rect2(tile_center - size/2, size)
-			draw_rect(rect, Color.ORANGE, false, 2.0)
-			
-			# Draw a marker at the actual click position to show the difference
-			if _click_position:
-				draw_circle(_click_position, 6.0, Color.BLUE)
-				draw_line(_click_position, tile_center, Color.MAGENTA, 2.0)
 
 # Get AStar path using AStar2D's API directly
 func get_astar_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:

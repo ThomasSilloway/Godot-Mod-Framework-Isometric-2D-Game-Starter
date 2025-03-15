@@ -4,17 +4,18 @@ signal direction_changed(direction: Vector2)
 
 @export var speed := 200.0
 @export var arrival_threshold := 5.0
-# Removed independent debug flag - we'll use the one from navigation
 
 var _current_path: PackedVector2Array
 var _moving := false
 var _current_path_index := 0
-var _last_click_pos: Vector2  # New variable
-var _navigation  # Cache the navigation reference
+var _last_click_pos: Vector2
+var _navigation: Node2D  # Cache the navigation reference
+var _debug_draw: Node2D  # Cache the debug visualization reference
 
 func _ready() -> void:
-	# Cache the navigation reference to avoid repeated lookups
+	# Cache references to avoid repeated lookups
 	_navigation = get_node("%Isometric-Navigation")
+	_debug_draw = get_node("%World-Draw-Debug")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -34,15 +35,14 @@ func _on_mouse_click(target_pos: Vector2) -> void:
 			print("Selected Tile Coordinate: ", tile_coord)
 			print("Selected Tile World Position: ", tile_center)
 		
-		_navigation.highlight_tile_at(target_pos)
-		
-		# Store the click position for debugging
+			# Store the click position for debugging
 		_last_click_pos = target_pos
 		
-	var debug_draw = get_node("%World-Draw-Debug")
-	if debug_draw:
-		debug_draw.add_click_position(target_pos)
-		
+		# Add click position and highlight tile using the debug visualization component
+		if _debug_draw:
+			_debug_draw.add_click_position(target_pos)
+			_debug_draw.highlight_tile_at(target_pos, tile_coord)
+	
 	_set_target_position(target_pos)
 
 func _physics_process(delta: float) -> void:
