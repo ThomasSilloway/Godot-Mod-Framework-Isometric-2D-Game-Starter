@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=4 uid="uid://vtp5j3ibsvpo"]
+[gd_scene load_steps=6 format=4 uid="uid://vtp5j3ibsvpo"]
 
 [ext_resource type="TileSet" uid="uid://gfg6by1pxr0" path="res://isometric_2d_prototype/tilemap_proto_02_kenny_farm/tilemap_proto_02_kenny_farm.tres" id="1_x8wi7"]
 [ext_resource type="PackedScene" uid="uid://b1nm12mnu115" path="res://isometric_2d_prototype/characters/proto_male_kenny/character_male_kenny.tscn" id="2_ltwsb"]
 [ext_resource type="Script" uid="uid://jeu05lhxc5b5" path="res://isometric_2d_prototype/navigation/a_star_2d_navigation.gd" id="3_x8wi7"]
 [ext_resource type="Script" uid="uid://d33vp0wvoypy2" path="res://isometric_2d_prototype/debug/world_debug_draw.gd" id="4_lmqgp"]
+[ext_resource type="Script" uid="uid://cnv1wus7tn6es" path="res://isometric_2d_prototype/navigation/wall_collision_detector.gd" id="4_ltwsb"]
 
 [node name="MainScene" type="Node2D"]
 
@@ -18,6 +19,7 @@ tile_set = ExtResource("1_x8wi7")
 y_sort_enabled = true
 
 [node name="Character-Male-Kenny" parent="Tilemap/YSortables" instance=ExtResource("2_ltwsb")]
+unique_name_in_owner = true
 scale = Vector2(1.25, 1.25)
 speed = 50.0
 
@@ -25,20 +27,40 @@ speed = 50.0
 scale = Vector2(0.999999, 0.999999)
 zoom = Vector2(0.75, 0.75)
 
-[node name="TileMapLayer-Walls-EW" type="TileMapLayer" parent="Tilemap/YSortables"]
+[node name="TileMapLayer-Walls-West" type="TileMapLayer" parent="Tilemap/YSortables"]
+unique_name_in_owner = true
 y_sort_enabled = true
 tile_map_data = PackedByteArray("AAD/////DQAAAAAAAAD///7/DQAAAAAAAAD///3/DQAAAAAAAAA=")
 tile_set = ExtResource("1_x8wi7")
 
-[node name="TileMapLayer-Walls-NS" type="TileMapLayer" parent="Tilemap/YSortables"]
+[node name="TileMapLayer-Walls-East" type="TileMapLayer" parent="Tilemap/YSortables"]
+unique_name_in_owner = true
 y_sort_enabled = true
-tile_map_data = PackedByteArray("AAD/////DQABAAAAAAAAAP//DQABAAAAAAABAP//DQABAAAAAAA=")
+tile_set = ExtResource("1_x8wi7")
+
+[node name="TileMapLayer-Walls-North" type="TileMapLayer" parent="Tilemap/YSortables"]
+unique_name_in_owner = true
+y_sort_enabled = true
+tile_set = ExtResource("1_x8wi7")
+
+[node name="TileMapLayer-Walls-South" type="TileMapLayer" parent="Tilemap/YSortables"]
+unique_name_in_owner = true
+y_sort_enabled = true
+tile_map_data = PackedByteArray("AAABAP//DQABAAAAAAAAAP//DQABAAAAAAD/////DQABAAAAAAA=")
 tile_set = ExtResource("1_x8wi7")
 
 [node name="Isometric-Navigation" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_x8wi7")
+_debug_path_logging = true
+
+[node name="Wall-Collision-Detector" type="Node2D" parent="Isometric-Navigation"]
+unique_name_in_owner = true
+script = ExtResource("4_ltwsb")
+_debug_path_logging = true
 
 [node name="World-Draw-Debug" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_lmqgp")
+_debug_show_coordinates = true
+_debug_coordinate_system = 2

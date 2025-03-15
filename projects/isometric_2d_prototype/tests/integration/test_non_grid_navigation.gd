@@ -9,7 +9,7 @@ func before_all():
 	gut.p("Testing non-grid AStar2D navigation system")
 
 func before_each():
-	_test_scene = preload("res://isometric_2d_prototype/test_navigation_scene.tscn").instantiate()
+	_test_scene = preload("res://isometric_2d_prototype/test_navigation_collision_scene.tscn").instantiate()
 	add_child_autofree(_test_scene)
 	_navigation = _test_scene.get_node("%Isometric-Navigation")
 	
