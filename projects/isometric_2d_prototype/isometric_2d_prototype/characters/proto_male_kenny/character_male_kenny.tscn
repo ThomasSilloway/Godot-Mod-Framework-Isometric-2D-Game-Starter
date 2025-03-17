@@ -287,9 +287,9 @@ arrival_threshold = 10.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 y_sort_enabled = true
-position = Vector2(0, -190)
 sprite_frames = SubResource("SpriteFrames_w7x6r")
 animation = &"idle_down"
+offset = Vector2(0, -190)
 script = ExtResource("7_i2sl3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
