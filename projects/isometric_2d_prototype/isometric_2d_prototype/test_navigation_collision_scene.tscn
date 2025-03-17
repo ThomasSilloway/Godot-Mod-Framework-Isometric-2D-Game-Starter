@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=4 uid="uid://vtp5j3ibsvpo"]
+[gd_scene load_steps=8 format=4 uid="uid://vtp5j3ibsvpo"]
 
 [ext_resource type="TileSet" uid="uid://gfg6by1pxr0" path="res://isometric_2d_prototype/tilemap_proto_02_kenny_farm/tilemap_proto_02_kenny_farm.tres" id="1_x8wi7"]
 [ext_resource type="PackedScene" uid="uid://b1nm12mnu115" path="res://isometric_2d_prototype/characters/proto_male_kenny/character_male_kenny.tscn" id="2_ltwsb"]
+[ext_resource type="Texture2D" uid="uid://ut8bd0v0ngs2" path="res://isometric_2d_prototype/cursor/cursor_outline_character_size_front.png" id="3_lmqgp"]
 [ext_resource type="Script" uid="uid://jeu05lhxc5b5" path="res://isometric_2d_prototype/navigation/a_star_2d_navigation.gd" id="3_x8wi7"]
 [ext_resource type="Script" uid="uid://d33vp0wvoypy2" path="res://isometric_2d_prototype/debug/world_debug_draw.gd" id="4_lmqgp"]
 [ext_resource type="Script" uid="uid://cnv1wus7tn6es" path="res://isometric_2d_prototype/navigation/wall_collision_detector.gd" id="4_ltwsb"]
+[ext_resource type="Texture2D" uid="uid://46ycpxaj4iw8" path="res://isometric_2d_prototype/cursor/cursor_outline_character_size_back.png" id="4_rvxty"]
 
 [node name="MainScene" type="Node2D"]
 
@@ -12,7 +14,7 @@
 
 [node name="TileMapLayer-Ground" type="TileMapLayer" parent="Tilemap"]
 unique_name_in_owner = true
-tile_map_data = PackedByteArray("AAD7//n/FgAEAAEAAAD7//r/FgAEAAEAAAD7//v/FgAEAAEAAAD7//z/FgAEAAEAAAD7//3/FgAEAAEAAAD7//7/FgAEAAEAAAD7////FgAEAAEAAAD7/wAAFgAEAAEAAAD7/wEAFgAEAAEAAAD7/wIAFgAEAAEAAAD8//n/FgAEAAEAAAD8//r/FgAEAAEAAAD8//v/FgAEAAEAAAD8//z/FgAEAAEAAAD8//3/FgAEAAEAAAD8//7/FgAEAAEAAAD8////FgAEAAEAAAD8/wAAFgAEAAEAAAD8/wEAFgAEAAEAAAD8/wIAFgAEAAEAAAD9//n/FgAEAAEAAAD9//r/FgAEAAEAAAD9//v/FgAEAAEAAAD9//z/FgAEAAEAAAD9//3/FgAEAAEAAAD9//7/FgAEAAEAAAD9////FgAEAAEAAAD9/wAAFgAEAAEAAAD9/wEAFgAEAAEAAAD9/wIAFgAEAAEAAAD+//n/FgAEAAEAAAD+//r/FgAEAAEAAAD+//v/FgAEAAEAAAD+//z/FgAEAAEAAAD+//3/FgAEAAEAAAD+//7/FgAEAAEAAAD+////FgAEAAEAAAD+/wAAFgAEAAEAAAD+/wEAFgAEAAEAAAD+/wIAFgAEAAEAAAD///n/FgAEAAEAAAD///r/FgAEAAEAAAD///v/FgAEAAEAAAD///z/FgAEAAEAAAD///3/FgAEAAEAAAD///7/FgAEAAEAAAD/////FgAEAAEAAAD//wAAFgAEAAEAAAD//wEAFgAEAAEAAAD//wIAFgAEAAEAAAAAAPn/FgAEAAEAAAAAAPr/FgAEAAEAAAAAAPv/FgAEAAEAAAAAAPz/FgAEAAEAAAAAAP3/FgAEAAEAAAAAAP7/FgAEAAEAAAAAAP//FgAEAAEAAAAAAAAAFgAEAAEAAAAAAAEAFgAEAAEAAAAAAAIAFgAEAAEAAAABAPn/FgAEAAEAAAABAPr/FgAEAAEAAAABAPv/FgAEAAEAAAABAPz/FgAEAAEAAAABAP3/FgAEAAEAAAABAP7/FgAEAAEAAAABAP//FgAEAAEAAAABAAAAFgAEAAEAAAABAAEAFgAEAAEAAAABAAIAFgAEAAEAAAACAPn/FgAEAAEAAAACAPr/FgAEAAEAAAACAPv/FgAEAAEAAAACAPz/FgAEAAEAAAACAP3/FgAEAAEAAAACAP7/FgAEAAEAAAACAP//FgAEAAEAAAACAAAAFgAEAAEAAAACAAEAFgAEAAEAAAACAAIAFgAEAAEAAAADAPn/FgAEAAEAAAADAPr/FgAEAAEAAAADAPv/FgAEAAEAAAADAPz/FgAEAAEAAAADAP3/FgAEAAEAAAADAP7/FgAEAAEAAAADAP//FgAEAAEAAAADAAAAFgAEAAEAAAADAAEAFgAEAAEAAAADAAIAFgAEAAEAAAAEAPn/FgAEAAEAAAAEAPr/FgAEAAEAAAAEAPv/FgAEAAEAAAAEAPz/FgAEAAEAAAAEAP3/FgAEAAEAAAAEAP7/FgAEAAEAAAAEAP//FgAEAAEAAAAEAAAAFgAEAAEAAAAEAAEAFgAEAAEAAAAEAAIAFgAEAAEAAAA=")
+tile_map_data = PackedByteArray("AAD7//n/FgAEAAEAAAD7//r/FgAEAAEAAAD7//v/FgAEAAEAAAD7//z/FgAEAAEAAAD7//3/FgAEAAEAAAD7//7/FgAEAAEAAAD7////FgAEAAEAAAD7/wAAFgAEAAEAAAD7/wEAFgAEAAEAAAD7/wIAFgAEAAEAAAD8//n/FgAEAAEAAAD8//r/FgAEAAEAAAD8//v/FgAEAAEAAAD8//z/FgAEAAEAAAD8//3/FgAEAAEAAAD8//7/FgAEAAEAAAD8////FgAEAAEAAAD8/wAAFgAEAAEAAAD8/wEAFgAEAAEAAAD8/wIAFgAEAAEAAAD9//n/FgAEAAEAAAD9//r/FgAEAAEAAAD9//v/FgAEAAEAAAD9//z/FgAEAAEAAAD9//3/FgAEAAEAAAD9//7/FgAEAAEAAAD9////FgAEAAEAAAD9/wAAFgAEAAEAAAD9/wEAFgAEAAEAAAD9/wIAFgAEAAEAAAD+//n/FgAEAAEAAAD+//r/FgAEAAEAAAD+//v/FgAEAAEAAAD+//z/FgAEAAEAAAD+//3/FgAEAAEAAAD+//7/FgAEAAEAAAD+////FgAEAAEAAAD+/wIAFgAEAAEAAAD///n/FgAEAAEAAAD///r/FgAEAAEAAAD///v/FgAEAAEAAAD///z/FgAEAAEAAAD///3/FgAEAAEAAAD///7/FgAEAAEAAAD//wAAFgAEAAEAAAD//wIAFgAEAAEAAAAAAPn/FgAEAAEAAAAAAPr/FgAEAAEAAAAAAPv/FgAEAAEAAAAAAPz/FgAEAAEAAAAAAP3/FgAEAAEAAAAAAP7/FgAEAAEAAAAAAAIAFgAEAAEAAAABAPn/FgAEAAEAAAABAPr/FgAEAAEAAAABAPv/FgAEAAEAAAABAPz/FgAEAAEAAAABAP3/FgAEAAEAAAABAP7/FgAEAAEAAAABAP//FgAEAAEAAAABAAAAFgAEAAEAAAABAAEAFgAEAAEAAAABAAIAFgAEAAEAAAACAPn/FgAEAAEAAAACAPr/FgAEAAEAAAACAPv/FgAEAAEAAAACAPz/FgAEAAEAAAACAP3/FgAEAAEAAAACAP7/FgAEAAEAAAACAP//FgAEAAEAAAACAAAAFgAEAAEAAAACAAEAFgAEAAEAAAACAAIAFgAEAAEAAAADAPn/FgAEAAEAAAADAPr/FgAEAAEAAAADAPv/FgAEAAEAAAADAPz/FgAEAAEAAAADAP3/FgAEAAEAAAADAP7/FgAEAAEAAAADAP//FgAEAAEAAAADAAAAFgAEAAEAAAADAAEAFgAEAAEAAAADAAIAFgAEAAEAAAAEAPn/FgAEAAEAAAAEAPr/FgAEAAEAAAAEAPv/FgAEAAEAAAAEAPz/FgAEAAEAAAAEAP3/FgAEAAEAAAAEAP7/FgAEAAEAAAAEAP//FgAEAAEAAAAEAAAAFgAEAAEAAAAEAAEAFgAEAAEAAAAEAAIAFgAEAAEAAAD/////FgAEAAEAAAAAAP//FgAEAAEAAAD+/wEAFgAEAAEAAAD+/wAAFgAEAAEAAAAAAAEAFgAEAAEAAAAAAAAAFgAEAAEAAAD//wEAFgAEAAEAAAA=")
 tile_set = ExtResource("1_x8wi7")
 
 [node name="YSortables" type="Node2D" parent="Tilemap"]
@@ -49,6 +51,22 @@ y_sort_enabled = true
 tile_map_data = PackedByteArray("AAABAP//DQABAAAAAAAAAP//DQABAAAAAAD/////DQABAAAAAAA=")
 tile_set = ExtResource("1_x8wi7")
 
+[node name="Cursor" type="Node2D" parent="Tilemap/YSortables"]
+y_sort_enabled = true
+
+[node name="Front" type="Sprite2D" parent="Tilemap/YSortables/Cursor"]
+modulate = Color(0.89551, 0.323374, 0.317384, 1)
+y_sort_enabled = true
+texture = ExtResource("3_lmqgp")
+offset = Vector2(0, -180)
+
+[node name="Back" type="Sprite2D" parent="Tilemap/YSortables/Cursor"]
+modulate = Color(0.89551, 0.323374, 0.317384, 1)
+y_sort_enabled = true
+position = Vector2(0, -18)
+texture = ExtResource("4_rvxty")
+offset = Vector2(0, -162)
+
 [node name="Isometric-Navigation" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_x8wi7")
@@ -62,5 +80,6 @@ _debug_path_logging = true
 [node name="World-Draw-Debug" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_lmqgp")
-_debug_show_coordinates = true
+_debug_draw = false
+_debug_show_walls = false
 _debug_coordinate_system = 2
