@@ -3,6 +3,7 @@ extends GutTest
 var _test_scene
 var _navigation
 var _character_controller
+var _util_grid
 var _wait_frames := 180  # About 3 seconds at 60 fps
 
 func before_all():
@@ -13,17 +14,21 @@ func before_each():
 	add_child_autofree(_test_scene)
 	_navigation = _test_scene.get_node("%Isometric-Navigation")
 	
+	# Get reference to the grid utility
+	_util_grid = _test_scene.get_node("%Util-Grid")
+	
 	# Enable debug path logging for this test
 	_navigation._debug_path_logging = true
 	
 	_character_controller = _test_scene.get_node("Tilemap/YSortables/Character-Male-Kenny")
 	assert_not_null(_character_controller, "Character controller should be found")
 	assert_not_null(_navigation, "Navigation should be found")
+	assert_not_null(_util_grid, "UtilGrid should be found")
 
 func test_move_around_walls():
 	var error := OK
 	
-	if not _character_controller or not _navigation:
+	if not _character_controller or not _navigation or not _util_grid:
 		push_error("Required nodes not found")
 		error = ERR_DOES_NOT_EXIST
 		assert_eq(error, OK, "Required nodes should exist")
@@ -34,8 +39,8 @@ func test_move_around_walls():
 	
 	# Target grid position is (-1, -1)
 	var target_grid_pos := Vector2i(-1, -1)
-	# Get world position using navigation system's public method
-	var target_world_pos: Vector2i = _navigation._grid_to_world(target_grid_pos)  # This corresponds to (-1,-1) in grid coords
+	# Get world position using the utility grid class
+	var target_world_pos: Vector2 = _util_grid.grid_to_world(target_grid_pos)  # This corresponds to (-1,-1) in grid coords
 	
 	if not _navigation.is_position_valid(target_world_pos):
 		push_error("Target position is outside navigation bounds")

@@ -11,11 +11,16 @@ var _current_path_index := 0
 var _last_click_pos: Vector2
 var _navigation: Node2D  # Cache the navigation reference
 var _debug_draw: Node2D  # Cache the debug visualization reference
+var _grid_util: UtilGrid  # Cache for the grid utility reference
 
 func _ready() -> void:
 	# Cache references to avoid repeated lookups
 	_navigation = get_node("%Isometric-Navigation")
 	_debug_draw = get_node("%World-Draw-Debug")
+	_grid_util = get_node("%Util-Grid")
+	
+	if not _grid_util:
+		push_warning("Grid utility node not found, coordinate conversions may not work properly")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -27,15 +32,15 @@ func _on_mouse_click(target_pos: Vector2) -> void:
 		print("\nClick Information:")
 		print("World Click Position: ", target_pos)
 	
-	if _navigation:
-		var tile_coord = _navigation._world_to_grid(target_pos)
-		var tile_center = _navigation.get_tile_center(target_pos)
+	if _grid_util:
+		var tile_coord = _grid_util.world_to_grid(target_pos)
+		var tile_center = _grid_util.get_tile_center(target_pos)
 		
-		if _navigation._debug_path_logging:
+		if _navigation and _navigation._debug_path_logging:
 			print("Selected Tile Coordinate: ", tile_coord)
 			print("Selected Tile World Position: ", tile_center)
 		
-			# Store the click position for debugging
+		# Store the click position for debugging
 		_last_click_pos = target_pos
 		
 		# Add click position and highlight tile using the debug visualization component

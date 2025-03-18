@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=4 uid="uid://vtp5j3ibsvpo"]
+[gd_scene load_steps=9 format=4 uid="uid://vtp5j3ibsvpo"]
 
 [ext_resource type="TileSet" uid="uid://gfg6by1pxr0" path="res://isometric_2d_prototype/tilemap_proto_02_kenny_farm/tilemap_proto_02_kenny_farm.tres" id="1_x8wi7"]
 [ext_resource type="PackedScene" uid="uid://b1nm12mnu115" path="res://isometric_2d_prototype/characters/proto_male_kenny/character_male_kenny.tscn" id="2_ltwsb"]
@@ -7,8 +7,22 @@
 [ext_resource type="Script" uid="uid://d33vp0wvoypy2" path="res://isometric_2d_prototype/debug/world_debug_draw.gd" id="4_lmqgp"]
 [ext_resource type="Script" uid="uid://cnv1wus7tn6es" path="res://isometric_2d_prototype/navigation/wall_collision_detector.gd" id="4_ltwsb"]
 [ext_resource type="Texture2D" uid="uid://46ycpxaj4iw8" path="res://isometric_2d_prototype/cursor/cursor_outline_character_size_back.png" id="4_rvxty"]
+[ext_resource type="Script" uid="uid://dt0s62gg4s2af" path="res://isometric_2d_prototype/navigation/util_grid.gd" id="8_rvxty"]
 
 [node name="MainScene" type="Node2D"]
+
+[node name="Utils" type="Node2D" parent="."]
+
+[node name="World-Draw-Debug" type="Node2D" parent="Utils"]
+unique_name_in_owner = true
+script = ExtResource("4_lmqgp")
+_debug_show_coordinates = true
+_debug_show_walls = false
+_debug_coordinate_system = 2
+
+[node name="Util-Grid" type="Node2D" parent="Utils"]
+unique_name_in_owner = true
+script = ExtResource("8_rvxty")
 
 [node name="Tilemap" type="Node2D" parent="."]
 
@@ -52,6 +66,7 @@ tile_map_data = PackedByteArray("AAABAP//DQABAAAAAAAAAP//DQABAAAAAAD/////DQABAAA
 tile_set = ExtResource("1_x8wi7")
 
 [node name="Cursor" type="Node2D" parent="Tilemap/YSortables"]
+unique_name_in_owner = true
 y_sort_enabled = true
 
 [node name="Front" type="Sprite2D" parent="Tilemap/YSortables/Cursor"]
@@ -76,10 +91,3 @@ _debug_path_logging = true
 unique_name_in_owner = true
 script = ExtResource("4_ltwsb")
 _debug_path_logging = true
-
-[node name="World-Draw-Debug" type="Node2D" parent="."]
-unique_name_in_owner = true
-script = ExtResource("4_lmqgp")
-_debug_draw = false
-_debug_show_walls = false
-_debug_coordinate_system = 2
