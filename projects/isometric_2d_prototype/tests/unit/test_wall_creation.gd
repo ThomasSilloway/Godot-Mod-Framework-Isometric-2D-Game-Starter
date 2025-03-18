@@ -3,6 +3,7 @@ extends GutTest
 var _scene: Node2D
 var _wall_detector: Node2D
 var _a_star: Node2D
+var _util_grid: UtilGrid
 
 func before_each():
 	# Load the test scene
@@ -12,9 +13,11 @@ func before_each():
 	# Get references to key nodes
 	_wall_detector = _scene.get_node("%Wall-Collision-Detector")
 	_a_star = _scene.get_node("%Isometric-Navigation")
+	_util_grid = _scene.get_node("%Util-Grid")
 	
 	assert_not_null(_wall_detector, "Wall detector node should exist")
 	assert_not_null(_a_star, "A* navigation node should exist")
+	assert_not_null(_util_grid, "UtilGrid node should exist")
 	
 	# Clear wall detection cache before each test
 	_wall_detector.clear_cache()
@@ -75,13 +78,13 @@ func test_west_walls():
 
 func test_wall_impact_on_pathfinding():
 	# Test pathfinding with south wall
-	var start_pos = _a_star._grid_to_world(Vector2i(-1, 0))  # Updated from 0,0
-	var end_pos = _a_star._grid_to_world(Vector2i(-1, -1))   # Updated to match
+	var start_pos = _util_grid.grid_to_world(Vector2i(-1, 0))  # Updated to use util_grid
+	var end_pos = _util_grid.grid_to_world(Vector2i(-1, -1))   # Updated to use util_grid
 	var path = _a_star.calculate_path(start_pos, end_pos)
 	
 	assert_gt(path.size(), 0, "Path should have at least one point")
-	var start_grid = _a_star._world_to_grid(path[0])
-	var end_grid = _a_star._world_to_grid(path[-1])
+	var start_grid = _util_grid.world_to_grid(path[0])
+	var end_grid = _util_grid.world_to_grid(path[-1])
 	# Test if path follows expected route around walls
 	var expected_points = [
 		Vector2i(-1, 0),
@@ -96,7 +99,7 @@ func test_wall_impact_on_pathfinding():
 	
 	var path_points = []
 	for point in path:
-		path_points.append(_a_star._world_to_grid(point))
+		path_points.append(_util_grid.world_to_grid(point))
 	
 	assert_eq(
 		path_points,
@@ -105,13 +108,13 @@ func test_wall_impact_on_pathfinding():
 	)
 	
 	# Test pathfinding with west wall
-	start_pos = _a_star._grid_to_world(Vector2i(-1, -1))  # Updated to match new coordinate system
-	end_pos = _a_star._grid_to_world(Vector2i(-2, -1))    # Updated to match
+	start_pos = _util_grid.grid_to_world(Vector2i(-1, -1))  # Updated to use util_grid
+	end_pos = _util_grid.grid_to_world(Vector2i(-2, -1))    # Updated to use util_grid
 	path = _a_star.calculate_path(start_pos, end_pos)
 	
 	assert_gt(path.size(), 0, "Path should have at least one point")
-	start_grid = _a_star._world_to_grid(path[0])
-	end_grid = _a_star._world_to_grid(path[-1])
+	start_grid = _util_grid.world_to_grid(path[0])
+	end_grid = _util_grid.world_to_grid(path[-1])
 	# Test if path follows expected route around walls
 	expected_points = [
 		Vector2i(-1, -1),
@@ -126,7 +129,7 @@ func test_wall_impact_on_pathfinding():
 	
 	path_points = []
 	for point in path:
-		path_points.append(_a_star._world_to_grid(point))
+		path_points.append(_util_grid.world_to_grid(point))
 	
 	assert_eq(
 		path_points,

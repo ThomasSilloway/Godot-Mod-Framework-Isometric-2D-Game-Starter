@@ -12,15 +12,18 @@ var _id_to_grid_map := {} # Dictionary to map AStar IDs to grid coordinates
 var _map_rect: Rect2i # Store map rectangle for bounds checking
 var _grid_offset := Vector2i() # Offset to make all grid coordinates positive
 var _wall_detector: Node2D # Wall collision detector reference
+var _util_grid: UtilGrid # Reference to the grid utilities
 
 @export var _debug_path_logging := false  # Debug flag for controlling path logs
 
 func _ready() -> void:
 	# Find the wall detector node in the scene
 	_wall_detector = get_node("%Wall-Collision-Detector")
+	_util_grid = get_node("%Util-Grid")
 	
 	var tilemap: TileMapLayer = get_node("%TileMapLayer-Ground")
 	if tilemap:
+		
 		_setup_grid(tilemap)
 		# Emit debug points after grid is set up
 		emit_signal("grid_updated", get_debug_points())
@@ -31,8 +34,8 @@ func _compute_cost(from_id: int, to_id: int) -> float:
 	var from_grid_pos = _get_grid_pos_from_id(from_id)
 	var to_grid_pos = _get_grid_pos_from_id(to_id)
 	
-	var from_pos = _grid_to_world(from_grid_pos)
-	var to_pos = _grid_to_world(to_grid_pos)
+	var from_pos = _util_grid.grid_to_world(from_grid_pos)
+	var to_pos = _util_grid.grid_to_world(to_grid_pos)
 	var offset = to_pos - from_pos
 	
 	# Return 1.0 for orthogonal, 1.4 for diagonal
@@ -55,7 +58,7 @@ func _setup_grid(tilemap: TileMapLayer) -> void:
 	for x in range(_map_rect.position.x - 1, _map_rect.position.x + _map_rect.size.x + 1):
 		for y in range(_map_rect.position.y - 1, _map_rect.position.y + _map_rect.size.y + 1):
 			var grid_pos := Vector2i(x, y)
-			var world_pos := _grid_to_world(grid_pos)
+			var world_pos := _util_grid.grid_to_world(grid_pos)
 			var id := _get_id_from_grid_pos(grid_pos)
 			
 			# Add point to AStar2D
@@ -116,11 +119,11 @@ func _setup_grid(tilemap: TileMapLayer) -> void:
 	if _debug_path_logging:
 		print("AStar2D setup complete with ", _astar.get_point_count(), " points")
 		var test_pos = Vector2(0, 0)
-		var grid_pos = _world_to_grid(test_pos)
+		var grid_pos = _util_grid.world_to_grid(test_pos)
 		print("World (0,0) → Grid: ", grid_pos)
 		
 		# Check grid to world conversion
-		var world_pos = _grid_to_world(grid_pos)
+		var world_pos = _util_grid.grid_to_world(grid_pos)
 		print("Grid ", grid_pos, " → World: ", world_pos)
 		
 		# Verify point exists in AStar2D
@@ -145,14 +148,14 @@ func _get_grid_pos_from_id(id: int) -> Vector2i:
 	return Vector2i(offset_x, offset_y) - _grid_offset
 
 func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
-	var start_grid_pos = _world_to_grid(start_pos)
-	var end_grid_pos = _world_to_grid(end_pos)
+	var start_grid_pos = _util_grid.world_to_grid(start_pos)
+	var end_grid_pos = _util_grid.world_to_grid(end_pos)
 	
 	if _debug_path_logging:
 		print("Start Grid Position: ", start_grid_pos)
 		print("End Grid Position: ", end_grid_pos)
-		print("Start World: ", start_pos, " → Grid: ", start_grid_pos, " → Back to World: ", _grid_to_world(start_grid_pos))
-		print("End World: ", end_pos, " → Grid: ", end_grid_pos, " → Back to World: ", _grid_to_world(end_grid_pos))
+		print("Start World: ", start_pos, " → Grid: ", start_grid_pos, " → Back to World: ", _util_grid.grid_to_world(start_grid_pos))
+		print("End World: ", end_pos, " → Grid: ", end_grid_pos, " → Back to World: ", _util_grid.grid_to_world(end_grid_pos))
 		
 		# Debug wall detection
 		var wall_exists = _wall_detector.has_wall_between(start_grid_pos, end_grid_pos)
@@ -192,7 +195,7 @@ func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
 				print("Segment ", i, ": ", from_grid, " → ", to_grid, " Wall: ", has_wall)
 		print("Final path grid positions:")
 		for point in _current_path:
-			print(_world_to_grid(point))
+			print(_util_grid.world_to_grid(point))
 	
 	# Emit signals
 	emit_signal("path_calculated", _current_path)
@@ -203,7 +206,7 @@ func calculate_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
 		"visited_nodes": id_path.size(),
 		"start_grid_pos": start_grid_pos,
 		"end_grid_pos": end_grid_pos,
-		"tile_center_position": _grid_to_world(end_grid_pos),
+		"tile_center_position": _util_grid.grid_to_world(end_grid_pos),
 	})
 	
 	return _current_path
@@ -214,7 +217,7 @@ func _get_closest_point_id(grid_pos: Vector2i) -> int:
 		return _grid_to_id_map[grid_pos]
 	
 	# If not, find the closest valid point
-	var world_pos = _grid_to_world(grid_pos)
+	var world_pos = _util_grid.grid_to_world(grid_pos)
 	var closest_id = _astar.get_closest_point(world_pos)
 	
 	if _debug_path_logging and closest_id != -1:
@@ -224,31 +227,8 @@ func _get_closest_point_id(grid_pos: Vector2i) -> int:
 	
 	return closest_id
 
-func _world_to_grid(pos: Vector2) -> Vector2i:
-	# Use TileMapLayer's conversion for consistency
-	var tilemap: TileMapLayer = get_node("%TileMapLayer-Ground")
-	return tilemap.local_to_map(pos) if tilemap else Vector2i()
-
-func _grid_to_world(grid_pos: Vector2i) -> Vector2:
-	# Use TileMapLayer's conversion for consistency
-	var tilemap: TileMapLayer = get_node("%TileMapLayer-Ground")
-	return tilemap.map_to_local(grid_pos) if tilemap else Vector2()
-
-# Debug function to validate coordinate conversions
-func debug_coordinates(world_pos: Vector2) -> void:
-	var grid_pos = _world_to_grid(world_pos)
-	var reconverted_world = _grid_to_world(grid_pos)
-	if _debug_path_logging:
-		print("Original world: ", world_pos)
-		print("Converted to grid: ", grid_pos)
-		print("Back to world: ", reconverted_world)
-
-func get_tile_center(world_pos: Vector2) -> Vector2:
-	var grid_pos = _world_to_grid(world_pos)
-	return _grid_to_world(grid_pos)
-
 func is_position_valid(pos: Vector2) -> bool:
-	var grid_pos := _world_to_grid(pos)
+	var grid_pos := _util_grid.world_to_grid(pos)
 	return _map_rect.has_point(grid_pos)
 
 func get_debug_points() -> Array:
@@ -280,32 +260,12 @@ func get_astar_path(start_pos: Vector2, end_pos: Vector2) -> PackedVector2Array:
 
 # Get the closest valid grid position
 func get_closest_valid_grid_position(pos: Vector2) -> Vector2i:
-	var grid_pos = _world_to_grid(pos)
-	
-	# If the calculated grid position is not valid, find the closest valid one
-	if not _map_rect.has_point(grid_pos):
-		var closest_distance := INF
-		var closest_pos := Vector2i()
-		
-		# Check surrounding grid cells to find the closest valid one
-		for x in range(-1, 2):
-			for y in range(-1, 2):
-				var test_pos = grid_pos + Vector2i(x, y)
-				if _map_rect.has_point(test_pos):
-					var world_test_pos = _grid_to_world(test_pos)
-					var distance = pos.distance_to(world_test_pos)
-					if distance < closest_distance:
-						closest_distance = distance
-						closest_pos = test_pos
-		
-		return closest_pos
-	
-	return grid_pos
+	return _util_grid.get_closest_valid_grid_position(pos)
 
 # Debug function to compare our conversions with AStar2D's positions
 func debug_coordinate_systems(world_pos: Vector2) -> void:
-	var our_grid_pos = _world_to_grid(world_pos)
-	var our_world_pos = _grid_to_world(our_grid_pos)
+	var our_grid_pos = _util_grid.world_to_grid(world_pos)
+	var our_world_pos = _util_grid.grid_to_world(our_grid_pos)
 	
 	if _grid_to_id_map.has(our_grid_pos):
 		var id = _grid_to_id_map[our_grid_pos]
@@ -328,7 +288,7 @@ func validate_coordinate_systems(world_pos: Vector2) -> bool:
 		return false
 		
 	var tilemap_grid = tilemap.local_to_map(world_pos)
-	var astar_grid = _world_to_grid(world_pos)
+	var astar_grid = _util_grid.world_to_grid(world_pos)
 	
 	if _debug_path_logging:
 		print("Validating coordinates:")

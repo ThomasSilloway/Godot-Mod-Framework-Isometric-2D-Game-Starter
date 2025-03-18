@@ -2,6 +2,7 @@ extends GutTest
 
 var _test_scene
 var _navigation
+var _util_grid
 var _character_controller
 var _wait_frames := 120  # About 2 seconds at 60 fps
 
@@ -12,6 +13,7 @@ func before_each():
 	_test_scene = preload("res://isometric_2d_prototype/test_navigation_collision_scene.tscn").instantiate()
 	add_child_autofree(_test_scene)
 	_navigation = _test_scene.get_node("%Isometric-Navigation")
+	_util_grid = _test_scene.get_node("%Util-Grid")
 	
 	# Enable debug path logging for this test
 	_navigation._debug_path_logging = true
@@ -40,10 +42,7 @@ func test_move_character_to_position():
 	# y = (grid_x + grid_y) * (tile_height / 2)
 	var tile_width := 256
 	var tile_height := 128
-	var target_world_pos := Vector2(
-		(target_grid_pos.x - target_grid_pos.y) * (tile_width / 2),
-		(target_grid_pos.x + target_grid_pos.y) * (tile_height / 2)
-	)
+	var target_world_pos : Vector2 = _util_grid.grid_to_world(target_grid_pos)
 	
 	if not _navigation.is_position_valid(target_world_pos):
 		push_error("Target position is outside navigation bounds")

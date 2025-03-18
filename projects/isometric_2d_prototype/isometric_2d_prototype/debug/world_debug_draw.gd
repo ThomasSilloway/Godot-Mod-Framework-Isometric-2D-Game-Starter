@@ -30,10 +30,12 @@ var _debug_points: Array = []
 var _pathfinding_info: Dictionary = {}
 var _navigation: Node2D
 var _wall_detector: Node2D
+var _util_grid: UtilGrid
 
 func _ready() -> void:
-	# Look for the navigation node and connect to its signals
+	# Look for required nodes and connect to signals
 	_navigation = get_node("%Isometric-Navigation")
+	_util_grid = get_node("%Util-Grid")
 	if _navigation:
 		_navigation.path_calculated.connect(_on_path_calculated)
 		_navigation.pathfinding_progress_updated.connect(_on_pathfinding_progress_updated)
@@ -122,7 +124,7 @@ func _draw() -> void:
 			for dir in directions:
 				var neighbor_pos = grid_pos + dir
 				if _wall_detector.has_wall_between(grid_pos, neighbor_pos):
-					var neighbor_world = _navigation._grid_to_world(neighbor_pos)
+					var neighbor_world = _util_grid.grid_to_world(neighbor_pos)
 					draw_line(pos, neighbor_world, Color.RED, 3.0)
 		
 		# Draw connections between points if enabled

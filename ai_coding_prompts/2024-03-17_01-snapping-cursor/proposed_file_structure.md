@@ -1,0 +1,32 @@
+- projects/isometric_2d_prototype/isometric_2d_prototype
+  - cursor/cursor.gd
+    - A new script to handle cursor snapping functionality
+    - Core responsibilities:
+      - Input handling for mouse movement
+      - Converting mouse position to grid coordinates using coordinate utility functions
+      - Snapping the cursor to the nearest valid tile
+      - Updating cursor visual position
+    - Key features:
+      - Use _process or _input to track mouse position changes
+      - Reference to the coordinate utilities for conversions
+      - Instant snapping to tile centers
+      - Support for all areas of the tilemap
+  
+  - navigation/util_grid.gd
+    - A new utility class to centralize coordinate conversion functions
+    - Extracted from a_star_2d_navigation.gd
+    - Functions to refactor:
+      - _world_to_grid: Convert world coordinates to grid coordinates
+      - _grid_to_world: Convert grid coordinates to world coordinates
+      - get_tile_center: Get the center position of a tile in world coordinates
+      - get_closest_valid_grid_position: Find valid grid positions
+    - Benefits:
+      - Reusable coordinate conversion across multiple components
+      - Avoid code duplication between navigation and cursor systems
+      - Centralized handling of tile size configuration
+      - Single source of truth for coordinate transformations
+  
+  - test_navigation_collision_scene.tscn
+    - Update existing scene:
+      - Attach the cursor.gd script to the existing Cursor node
+      - Ensure proper references between nodes
