@@ -1,0 +1,86 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build All",
+			"type": "shell",
+			"command": "${workspaceFolder}/scripts/build.bat",
+			"problemMatcher": []
+		},
+		{
+			"label": "Build Startup",
+			"type": "shell",
+			"command": "${workspaceFolder}/projects/startup/build.bat",
+			"problemMatcher": []
+		},
+		{
+			"label": "Run Latest",
+			"type": "shell",
+			"command": "${workspaceFolder}/scripts/run.bat",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Build Main Menu",
+			"type": "shell",
+			"command": "${workspaceFolder}/projects/main_menu/build.bat",
+			"problemMatcher": []
+		},
+		{
+			"label": "Build Settings",
+			"type": "shell",
+			"command": "${workspaceFolder}/projects/settings_menu/build.bat",
+			"problemMatcher": []
+		},
+		{
+			"label": "Build Isometric 2D Prototype",
+			"type": "shell",
+			"command": "${workspaceFolder}/projects/isometric_2d_prototype/build.bat",
+			"problemMatcher": []
+		},
+		{
+			"label": "Build Isometric 2D Prototype (Standalone)",
+			"type": "shell",
+			"command": "${workspaceFolder}/scripts/build_standalone.bat",
+			"args": ["isometric_2d_prototype"],
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Run Godot Game",
+			"type": "shell",
+			"command": "uv run c:/GithubRepos/Test/run-godot-game.py",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Parse Godot Scene",
+			"type": "shell",
+			"command": "uv",
+			"args": [
+				"run",
+				"parse-godot-scene/parse_godot_scene.py",
+				"${fileDirname}"
+			],
+			"options": {
+				"cwd": "C:\\GithubRepos\\GodotHelpers"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			},
+			"problemMatcher": []
+		}
+	]
+}
